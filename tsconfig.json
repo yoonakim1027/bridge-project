@@ -22,5 +22,5 @@
   },
   "include": ["**/*.ts", "**/*.tsx", "custom.d.ts", "styles", "src", "public"],
   "exclude": ["node_modules"],
-  "extends": "./tsconfig.extend.json"
+  "extends": "./tsconfig.json"
 }
