@@ -4,6 +4,10 @@ import Button from '@mui/material/Button';
 import Container from '@mui/material/Container';
 import Typography from '@mui/material/Typography';
 import Box from '@mui/material/Box';
+import { useNavigate } from 'react-router-dom';
+
+import axios from 'axios';
+import Cookies from 'js-cookie';
 
 type Props = {
   onLogin: (username: string, password: string) => void;
@@ -12,10 +16,24 @@ type Props = {
 const Login: React.FC<Props> = ({ onLogin }) => {
   const [username, setUsername] = useState<string>('');
   const [password, setPassword] = useState<string>('');
+  const navigate = useNavigate();
 
-  const handleSubmit = (e: React.FormEvent) => {
+  const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    onLogin(username, password);
+    try {
+      const response = await axios.post('http://localhost:3000', {
+        memberId: username,
+        pwd: password,
+      });
+      if (response.data) {
+        // 로그인 성공 시 쿠키에 토큰 저장
+        Cookies.set('token', response.data.data, { expires: 7 }); // 7일 동안 유효
+        onLogin(username, password);
+        navigate('/', { replace: true });
+      }
+    } catch (error) {
+      console.error('오류:', error);
+    }
   };
 
   return (
