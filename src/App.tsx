@@ -6,6 +6,7 @@ import Login from './components/Login';
 import { BrowserRouter, Route, Routes } from 'react-router-dom';
 import Cookies from 'js-cookie';
 import ProviderInfoPage from './pages/Uploaders/ProviderInfo';
+import Router from './router';
 
 function App() {
   const [isLoggedIn, setIsLoggedIn] = useState<boolean>(false);
@@ -24,28 +25,12 @@ function App() {
   };
 
   return (
-    <BrowserRouter>
+    <>
       <CssBaseline />
       <Container component="main" maxWidth="xs">
-        <Routes>
-          <Route
-            path="/"
-            element={
-              isLoggedIn ? (
-                <>
-                  <Typography component="h1" variant="h5">
-                    Welcome, admin!
-                  </Typography>
-                  <button onClick={handleLogout}>로그아웃</button>
-                </>
-              ) : (
-                <Login onLogin={handleLogin} />
-              )
-            }
-          />
-        </Routes>
+        <Router />
       </Container>
-    </BrowserRouter>
+    </>
   );
 }
 
