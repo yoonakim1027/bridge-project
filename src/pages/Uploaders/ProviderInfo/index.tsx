@@ -1,9 +1,9 @@
 import React from 'react';
-import Header from '@/components/Login/Delivery/Header';
-import InputField from '@/components/Login/Delivery/InputField';
-import ImageUploader from '@/components/Login/Delivery/ImageUploader';
-import SubmitButton from '@/components/Login/Delivery/SubmitButton';
-import CancelButton from '@/components/Login/Delivery/CancelButton';
+import Header from '@/components/Delivery/Header';
+import InputField from '@/components/Delivery/InputField';
+import ImageUploader from '@/components/Delivery/ImageUploader';
+import SubmitButton from '@/components/Delivery/SubmitButton';
+import CancelButton from '@/components/Delivery/CancelButton';
 import Container from '@mui/material/Container';
 import Box from '@mui/material/Box';
 

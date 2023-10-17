@@ -3,6 +3,7 @@ import CssBaseline from '@mui/material/CssBaseline';
 import Container from '@mui/material/Container';
 import Typography from '@mui/material/Typography';
 import Login from './components/Login';
+import ProviderInfoPage from './pages/Uploaders/ProviderInfo';
 
 function App() {
   const [isLoggedIn, setIsLoggedIn] = useState<boolean>(false);
@@ -19,13 +20,14 @@ function App() {
   return (
     <Container component="main" maxWidth="xs">
       <CssBaseline />
-      {isLoggedIn ? (
+      {/* {isLoggedIn ? (
         <Typography component="h1" variant="h5">
           Welcome, admin!
         </Typography>
       ) : (
         <Login onLogin={handleLogin} />
-      )}
+      )} */}
+      <ProviderInfoPage />
     </Container>
   );
 }
