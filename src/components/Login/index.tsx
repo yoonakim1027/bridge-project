@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import TextField from '@mui/material/TextField';
 import Button from '@mui/material/Button';
 import Container from '@mui/material/Container';
@@ -18,18 +18,39 @@ const Login: React.FC<Props> = ({ onLogin }) => {
   const [password, setPassword] = useState<string>('');
   const navigate = useNavigate();
 
+  useEffect(() => {
+    const token = Cookies.get('token');
+    if (token) {
+      onLogin('admin', 'password');
+      navigate('/', { replace: true });
+    }
+  }, [onLogin]);
+
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
+    // try {
+    //   const response = await axios.post('http://localhost:3000', {
+    //     memberId: username,
+    //     pwd: password,
+    //   });
+    //   if (response.data) {
+    //     // 로그인 성공 시 쿠키에 토큰 저장
+    //     Cookies.set('token', response.data.data, { expires: 7 }); // 7일 동안 유효
+    //     onLogin(username, password);
+    //     navigate('/', { replace: true });
+    //   }
+    // } catch (error) {
+    //   console.error('오류:', error);
+    // }
+
+    // -------------- Test 코드입니다 ----------------------
     try {
-      const response = await axios.post('http://localhost:3000', {
-        memberId: username,
-        pwd: password,
-      });
-      if (response.data) {
-        // 로그인 성공 시 쿠키에 토큰 저장
-        Cookies.set('token', response.data.data, { expires: 7 }); // 7일 동안 유효
+      if (username === 'admin' && password === 'password') {
+        Cookies.set('token', '내가 만든 쿠키~', { expires: 7 });
         onLogin(username, password);
         navigate('/', { replace: true });
+      } else {
+        alert('Invalid credentials');
       }
     } catch (error) {
       console.error('오류:', error);
