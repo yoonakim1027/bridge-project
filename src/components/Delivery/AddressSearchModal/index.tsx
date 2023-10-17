@@ -1,15 +1,19 @@
 import React, { useState } from 'react';
 import axios from 'axios';
 import {
-  Box,
-  Modal,
-  Backdrop,
-  Fade,
+  Card,
+  CardContent,
   TextField,
   Button,
   List,
   ListItem,
+  Typography,
+  Divider,
+  IconButton,
+  Modal,
+  Fade,
 } from '@mui/material';
+import CloseIcon from '@mui/icons-material/Close';
 
 interface AddressSearchModalProps {
   isOpen: boolean;
@@ -49,49 +53,56 @@ const AddressSearchModal: React.FC<AddressSearchModalProps> = ({
   return (
     <Modal open={isOpen} onClose={onClose} closeAfterTransition>
       <Fade in={isOpen}>
-        <Box sx={{ backgroundColor: 'background.paper', p: 2, borderRadius: 2 }}>
-          <TextField
-            value={searchTerm}
-            onChange={(e) => setSearchTerm(e.target.value)}
-            placeholder="주소를 입력하세요."
-            fullWidth
-          />
-          <Button
-            variant="contained"
-            color="primary"
-            onClick={searchAddress}
-            sx={{ mt: 1 }}
-          >
-            검색
-          </Button>
-          {addressList.length > 0 && (
-            <div>
-              <h3>검색 결과:</h3>
-              <List>
-                {addressList.map((item) => (
-                  <ListItem
-                    key={item.id}
-                    button
-                    onClick={() => {
-                      onSelectAddress(item.address_name);
-                      onClose();
-                    }}
-                  >
-                    {item.address_name}
-                  </ListItem>
-                ))}
-              </List>
-            </div>
-          )}
-          <Button
-            variant="outlined"
-            color="secondary"
+        <Card sx={{ maxWidth: 400, p: 3, mx: 'auto', mt: 8 }}>
+          <IconButton
+            sx={{ position: 'absolute', right: 10, top: 10 }}
             onClick={onClose}
-            sx={{ mt: 1 }}
           >
-            닫기
-          </Button>
-        </Box>
+            <CloseIcon />
+          </IconButton>
+          <Typography variant="h6" mb={2}>
+            주소 검색
+          </Typography>
+          <CardContent>
+            <TextField
+              value={searchTerm}
+              onChange={(e) => setSearchTerm(e.target.value)}
+              placeholder="주소를 입력하세요."
+              fullWidth
+              variant="outlined"
+            />
+            <Button
+              variant="contained"
+              color="primary"
+              onClick={searchAddress}
+              sx={{ mt: 2, mb: 2, width: '100%' }}
+            >
+              검색
+            </Button>
+            {addressList.length > 0 && (
+              <div>
+                <Divider sx={{ my: 2 }} />
+                <Typography variant="subtitle1" gutterBottom>
+                  검색 결과:
+                </Typography>
+                <List>
+                  {addressList.map((item) => (
+                    <ListItem
+                      key={item.id}
+                      button
+                      onClick={() => {
+                        onSelectAddress(item.address_name);
+                        onClose();
+                      }}
+                    >
+                      {item.address_name}
+                    </ListItem>
+                  ))}
+                </List>
+              </div>
+            )}
+          </CardContent>
+        </Card>
       </Fade>
     </Modal>
   );
