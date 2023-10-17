@@ -29,6 +29,15 @@ const AddressSearchModal: React.FC<AddressSearchModalProps> = ({
   const [searchTerm, setSearchTerm] = useState<string>('');
   const [addressList, setAddressList] = useState<any[]>([]);
 
+  const handleClose = () => {
+    // 상태를 초기화
+    setSearchTerm('');
+    setAddressList([]);
+
+    // 원래의 onClose prop을 호출
+    onClose();
+  };
+
   const searchAddress = async () => {
     const APP_KEY = process.env.REACT_APP_KAKAO_API_KEY;
     try {
@@ -51,12 +60,12 @@ const AddressSearchModal: React.FC<AddressSearchModalProps> = ({
   };
 
   return (
-    <Modal open={isOpen} onClose={onClose} closeAfterTransition>
+    <Modal open={isOpen} onClose={handleClose} closeAfterTransition>
       <Fade in={isOpen}>
         <Card sx={{ maxWidth: 400, p: 3, mx: 'auto', mt: 8 }}>
           <IconButton
             sx={{ position: 'absolute', right: 10, top: 10 }}
-            onClick={onClose}
+            onClick={handleClose}
           >
             <CloseIcon />
           </IconButton>
@@ -92,7 +101,7 @@ const AddressSearchModal: React.FC<AddressSearchModalProps> = ({
                       button
                       onClick={() => {
                         onSelectAddress(item.address_name);
-                        onClose();
+                        handleClose();
                       }}
                     >
                       {item.address_name}
