@@ -26,7 +26,7 @@ const AddressSearchModal: React.FC<AddressSearchModalProps> = ({
   const [addressList, setAddressList] = useState<any[]>([]);
 
   const searchAddress = async () => {
-    const APP_KEY = 'c4313c13eff0f80e26fa2097d3877b68';
+    const APP_KEY = process.env.REACT_APP_KAKAO_API_KEY;
     try {
       const response = await axios.get(
         'https://dapi.kakao.com/v2/local/search/address.json',

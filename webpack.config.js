@@ -1,4 +1,8 @@
 const path = require('path');
+const dotenv = require('dotenv');
+const webpack = require('webpack');
+
+dotenv.config();
 const HtmlWebpackPlugin = require('html-webpack-plugin');
 
 module.exports = {
@@ -30,7 +34,13 @@ module.exports = {
     new HtmlWebpackPlugin({
       template: './src/index.html',
     }),
+    new webpack.DefinePlugin({
+      'process.env.REACT_APP_KAKAO_API_KEY': JSON.stringify(
+        process.env.REACT_APP_KAKAO_API_KEY,
+      ),
+    }),
   ],
+
   devServer: {
     static: path.join(__dirname, 'dist'),
     compress: true,
