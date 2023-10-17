@@ -17,10 +17,9 @@
     "baseUrl": "./",
     "paths": {
       "@/*": ["./src/*"],
-      "@components/*": ["./Components/*"]
+      "@components/*": ["./src/components/*"]
     }
   },
   "include": ["**/*.ts", "**/*.tsx", "custom.d.ts", "styles", "src", "public"],
-  "exclude": ["node_modules"],
-  "extends": "./tsconfig.json"
+  "exclude": ["node_modules"]
 }

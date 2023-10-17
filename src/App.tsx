@@ -5,6 +5,7 @@ import Typography from '@mui/material/Typography';
 import Login from './components/Login';
 import { BrowserRouter, Route, Routes } from 'react-router-dom';
 import Cookies from 'js-cookie';
+import ProviderInfoPage from './pages/Uploaders/ProviderInfo';
 
 function App() {
   const [isLoggedIn, setIsLoggedIn] = useState<boolean>(false);
