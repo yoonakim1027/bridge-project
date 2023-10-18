@@ -91,6 +91,26 @@ const Login: React.FC<Props> = ({ onLogin }) => {
           >
             <Typography sx={{ fontWeight: 600 }}>Login</Typography>
           </Button>
+          <Button
+            type="submit"
+            fullWidth
+            variant="contained"
+            color="inherit"
+            disabled
+            sx={{ mt: 1, mb: 2 }}
+          >
+            <Typography sx={{ fontWeight: 600 }}>네이버로 로그인하기</Typography>
+          </Button>
+          <Button
+            type="submit"
+            fullWidth
+            variant="contained"
+            color="inherit"
+            disabled
+            sx={{ mt: 1, mb: 2 }}
+          >
+            <Typography sx={{ fontWeight: 600 }}>Google로 로그인하기</Typography>
+          </Button>
         </Box>
       </Paper>
     </Container>
