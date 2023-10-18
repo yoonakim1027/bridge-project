@@ -22,7 +22,7 @@ const Login: React.FC<Props> = ({ onLogin }) => {
     const token = Cookies.get('token');
     if (token) {
       onLogin('admin', 'password');
-      navigate('/', { replace: true });
+      navigate('/admin', { replace: true });
     }
   }, [onLogin]);
 
@@ -48,7 +48,7 @@ const Login: React.FC<Props> = ({ onLogin }) => {
       if (username === 'admin' && password === 'password') {
         Cookies.set('token', '내가 만든 쿠키~', { expires: 7 });
         onLogin(username, password);
-        navigate('/', { replace: true });
+        navigate('/admin', { replace: true });
       } else {
         alert('Invalid credentials');
       }
