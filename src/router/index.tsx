@@ -4,6 +4,7 @@ import Login from '@/components/Login';
 import ProviderInfoPage from '@/pages/Uploaders/ProviderInfo';
 import Sidebar from '@/components/Sidebar';
 import { SidebarProvider } from '@/contexts/SidebarContext';
+import AdminPage from '@/pages/Admin';
 
 interface RouterProps {
   isLoggedIn: boolean;
@@ -22,12 +23,11 @@ export default function Router({ isLoggedIn }: RouterProps) {
           path="login"
           element={
             <Login
-              onLogin={function (username: string, password: string): void {
-                throw new Error('Function not implemented.');
-              }}
+              onLogin={function (username: string, password: string): void {}}
             />
           }
         />
+        <Route path="/admin" element={<AdminPage />} />
         <Route path="/upload" element={<ProviderInfoPage />} />
         <Route
           path="*"
