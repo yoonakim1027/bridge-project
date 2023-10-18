@@ -7,7 +7,12 @@ import { BrowserRouter, Route, Routes } from 'react-router-dom';
 import Cookies from 'js-cookie';
 import ProviderInfoPage from './pages/Uploaders/ProviderInfo';
 import Router from './router';
-
+import { createTheme, ThemeProvider } from '@mui/material/styles';
+const theme = createTheme({
+  typography: {
+    fontFamily: 'Noto Sans KR, sans-serif',
+  },
+});
 function App() {
   const [isLoggedIn, setIsLoggedIn] = useState<boolean>(false);
   
@@ -22,10 +27,12 @@ function App() {
 
   return (
     <>
-      <CssBaseline />
-      <Container component="main" maxWidth="xs">
-        <Router />
-      </Container>
+      <ThemeProvider theme={theme}>
+        <CssBaseline />
+        <Container component="main" maxWidth="lg">
+          <Router isLoggedIn={isLoggedIn} />
+        </Container>
+      </ThemeProvider>
     </>
   );
 }
