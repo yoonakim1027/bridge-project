@@ -33,8 +33,8 @@ function App() {
     <>
       <ThemeProvider theme={theme}>
         <CssBaseline />
-        <Container component="main" maxWidth="xs">
-          <Router />
+        <Container component="main" maxWidth="lg">
+          <Router isLoggedIn={isLoggedIn} />
         </Container>
       </ThemeProvider>
     </>
