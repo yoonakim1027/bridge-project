@@ -5,6 +5,7 @@ import { styled } from '@mui/system';
 interface SidebarItemProps {
   label: string;
   IconComponent: React.ElementType;
+  onClick: () => void;
 }
 
 const CustomListItem = styled(ListItem)({
@@ -23,10 +24,14 @@ const CustomListItemIcon = styled(ListItemIcon)({
   },
 });
 
-const SidebarItem: React.FC<SidebarItemProps> = ({ label, IconComponent }) => {
+const SidebarItem: React.FC<SidebarItemProps> = ({
+  label,
+  IconComponent,
+  onClick,
+}) => {
   return (
     <ListItem>
-      <ListItemButton>
+      <ListItemButton onClick={onClick}>
         <CustomListItemIcon>
           <IconComponent />
         </CustomListItemIcon>

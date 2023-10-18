@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import { Drawer, List, Divider, IconButton } from '@mui/material';
 import { styled } from '@mui/system';
+import { Link } from 'react-router-dom';
 import SidebarItem from './SidebarItem';
 import HomeIcon from '@mui/icons-material/Home';
 import LocalShippingIcon from '@mui/icons-material/LocalShipping';
@@ -8,10 +9,11 @@ import ChevronLeftIcon from '@mui/icons-material/ChevronLeft';
 import ChevronRightIcon from '@mui/icons-material/ChevronRight';
 import { useSidebar } from '@/contexts/SidebarContext';
 import { Theme } from '@mui/material/styles';
+import { useNavigate } from 'react-router-dom';
 
 const items = [
-  { label: 'Home', IconComponent: HomeIcon },
-  { label: 'Delivery', IconComponent: LocalShippingIcon },
+  { label: 'Home', IconComponent: HomeIcon, path: '/admin' },
+  { label: 'Delivery', IconComponent: LocalShippingIcon, path: '/upload' },
 ];
 
 interface StyledDrawerProps {
@@ -43,6 +45,7 @@ const StyledDrawer = styled(Drawer)<StyledDrawerProps>(({ theme, open }) => ({
 
 const Sidebar: React.FC = () => {
   const { open, toggleSidebar } = useSidebar();
+  const navigate = useNavigate();
 
   return (
     <StyledDrawer
@@ -63,6 +66,7 @@ const Sidebar: React.FC = () => {
             key={index}
             label={item.label}
             IconComponent={item.IconComponent}
+            onClick={() => navigate(item.path)}
           />
         ))}
       </List>
