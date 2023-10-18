@@ -8,6 +8,7 @@ import { useNavigate } from 'react-router-dom';
 
 import axios from 'axios';
 import Cookies from 'js-cookie';
+import { Paper } from '@mui/material';
 
 type Props = {
   onLogin: (username: string, password: string) => void;
@@ -37,18 +38,20 @@ const Login: React.FC<Props> = ({ onLogin }) => {
   };
 
   return (
-    <Container component="main" maxWidth="xs">
-      <Box
+    <Container component="main" maxWidth="lg">
+      <Paper
         sx={{
           display: 'flex',
           flexDirection: 'column',
           alignItems: 'center',
-          mt: 8,
+          padding: 5,
+          marginTop: 20,
         }}
       >
-        <Typography component="h1" variant="h5">
-          Login
+        <Typography component="h1" variant="h6">
+          로그인
         </Typography>
+        <Box my={2} border={1} borderColor="divider" width="100%" />{' '}
         <Box component="form" noValidate onSubmit={handleSubmit} sx={{ mt: 1 }}>
           <TextField
             variant="outlined"
@@ -56,10 +59,11 @@ const Login: React.FC<Props> = ({ onLogin }) => {
             required
             fullWidth
             id="username"
-            label="Username"
+            label="ID"
             name="username"
             autoComplete="username"
             autoFocus
+            size="small"
             value={username}
             onChange={(e) => setUsername(e.target.value)}
           />
@@ -72,21 +76,23 @@ const Login: React.FC<Props> = ({ onLogin }) => {
             label="Password"
             type="password"
             id="password"
+            size="small"
             autoComplete="current-password"
             value={password}
+            sx={{ width: '100%' }}
             onChange={(e) => setPassword(e.target.value)}
           />
           <Button
             type="submit"
             fullWidth
             variant="contained"
-            color="primary"
+            color="inherit"
             sx={{ mt: 3, mb: 2 }}
           >
-            Login
+            <Typography sx={{ fontWeight: 600 }}>Login</Typography>
           </Button>
         </Box>
-      </Box>
+      </Paper>
     </Container>
   );
 };
