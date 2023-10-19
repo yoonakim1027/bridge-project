@@ -15,15 +15,23 @@ import {
   FormControl,
   FormLabel,
   TextField,
+  Autocomplete,
 } from '@mui/material';
+import brands from '@/data/brand.json';
 
 const ProviderInfoPage: React.FC = () => {
   const handleCancel = () => {
     console.log('Cancelled');
   };
+  const [brand, setBrand] = useState<string | null>(null);
 
   const [isModalOpen, setIsModalOpen] = useState(false);
-  const [selectedAddress, setSelectedAddress] = useState('');
+  const [pickupPlaceSelectedAddress, setPickupPlaceSelectedAddress] = useState('');
+  const [arrivalSelectedAddress, setArrivalSelectedAddress] = useState('');
+  const [currentAddressType, setCurrentAddressType] = useState<
+    'pickup' | 'arrival' | null
+  >(null);
+
   const [insuranceRegistered, setInsuranceRegistered] = useState('');
 
   const openModal = () => {
@@ -35,17 +43,43 @@ const ProviderInfoPage: React.FC = () => {
   };
 
   const handleSelectAddress = (address: string) => {
-    setSelectedAddress(address);
+    if (currentAddressType === 'pickup') {
+      setPickupPlaceSelectedAddress(address);
+    } else if (currentAddressType === 'arrival') {
+      setArrivalSelectedAddress(address);
+    }
+    setCurrentAddressType(null);
     closeModal();
   };
 
+  const openPickupAddressModal = () => {
+    setCurrentAddressType('pickup');
+    openModal();
+  };
+
+  const openArrivalAddressModal = () => {
+    setCurrentAddressType('arrival');
+    openModal();
+  };
   return (
     <Container>
       <Header title="탁송 차량 정보 입력" />
       <Box component="form" noValidate autoComplete="off" mt={2}>
-        <InputField label="차량 브랜드" placeholder="브랜드를 입력하세요." />
+        <Autocomplete
+          value={brand}
+          onChange={(event, newValue) => {
+            setBrand(newValue);
+          }}
+          options={brands} // 서버에서 받아올 것임
+          renderInput={(params) => (
+            <TextField
+              {...params}
+              label="차량 브랜드"
+              placeholder="브랜드를 입력하세요."
+            />
+          )}
+        />
         <InputField label="차량 번호" placeholder="차량 번호를 입력하세요." />
-
         <FormControl
           sx={{ flexDirection: 'row', display: 'flex' }}
           component="fieldset"
@@ -60,7 +94,6 @@ const ProviderInfoPage: React.FC = () => {
             <FormControlLabel value="no" control={<Radio />} label="아니오" />
           </RadioGroup>
         </FormControl>
-
         <TextField
           id="date"
           label="탁송 날짜"
@@ -71,7 +104,6 @@ const ProviderInfoPage: React.FC = () => {
             shrink: true,
           }}
         />
-
         <TextField
           id="time"
           label="탁송 픽업 시간"
@@ -82,23 +114,26 @@ const ProviderInfoPage: React.FC = () => {
             shrink: true,
           }}
         />
-
-        <InputField
-          label="차량 출발지 픽업 장소"
-          placeholder="출발지를 입력하세요."
-        />
-
+        <Box display="flex" alignItems="center">
+          <InputField
+            label="차량 출발지 픽업 장소"
+            placeholder="출발지를 입력하세요."
+            value={pickupPlaceSelectedAddress}
+          />
+          <button type="button" onClick={openPickupAddressModal}>
+            주소 검색
+          </button>
+        </Box>
         <Box display="flex" alignItems="center">
           <InputField
             label="탁송 도착 장소"
             placeholder="도착 장소를 입력하세요."
-            value={selectedAddress}
+            value={arrivalSelectedAddress}
           />
-          <button type="button" onClick={openModal}>
+          <button type="button" onClick={openArrivalAddressModal}>
             주소 검색
           </button>
         </Box>
-
         <TextField
           id="arrival-time"
           label="탁송 도착 원하는 시간"
@@ -109,17 +144,14 @@ const ProviderInfoPage: React.FC = () => {
             shrink: true,
           }}
         />
-
         <AddressSearchModal
           isOpen={isModalOpen}
           onClose={closeModal}
           onSelectAddress={handleSelectAddress}
         />
-
         <Box mt={2}>
           <ImageUploader label="사진 업로드" />
         </Box>
-
         <Box mt={2}>
           <SubmitButton text="제출" />
           <CancelButton text="취소" onClick={handleCancel} />
