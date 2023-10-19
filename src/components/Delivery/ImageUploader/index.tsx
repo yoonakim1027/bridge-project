@@ -21,7 +21,7 @@ const ImageUploader: React.FC<ImageUploaderProps> = ({ label }) => {
   };
 
   return (
-    <div>
+    <>
       <input
         accept="image/*"
         style={{ display: 'none' }}
@@ -31,7 +31,7 @@ const ImageUploader: React.FC<ImageUploaderProps> = ({ label }) => {
       />
       <label htmlFor="icon-button-file">
         <IconButton color="primary" aria-label={label} component="span">
-          <PhotoCamera />
+          <PhotoCamera sx={{ fontSize: 80 }} color="action"/>
         </IconButton>
       </label>
       {uploadedImage && (
@@ -41,7 +41,7 @@ const ImageUploader: React.FC<ImageUploaderProps> = ({ label }) => {
           style={{ maxWidth: '200px' }}
         />
       )}
-    </div>
+    </>
   );
 };
 
