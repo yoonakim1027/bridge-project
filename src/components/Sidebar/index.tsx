@@ -12,7 +12,7 @@ import { Theme } from '@mui/material/styles';
 import { useNavigate } from 'react-router-dom';
 
 const items = [
-  { label: 'Home', IconComponent: HomeIcon, path: '/admin' },
+  { label: 'Home', IconComponent: HomeIcon, path: '/login' },
   { label: 'Delivery', IconComponent: LocalShippingIcon, path: '/upload' },
 ];
 

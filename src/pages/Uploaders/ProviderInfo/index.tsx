@@ -8,6 +8,7 @@ import CancelButton from '@/components/Delivery/CancelButton';
 import AddressSearchModal from '@/components/Delivery/AddressSearchModal';
 import Container from '@mui/material/Container';
 import Box from '@mui/material/Box';
+import Grid from '@mui/material/Grid';
 import {
   Radio,
   RadioGroup,
@@ -15,15 +16,23 @@ import {
   FormControl,
   FormLabel,
   TextField,
+  Autocomplete,
 } from '@mui/material';
+import brands from '@/data/brand.json';
 
 const ProviderInfoPage: React.FC = () => {
   const handleCancel = () => {
     console.log('Cancelled');
   };
+  const [brand, setBrand] = useState<string | null>(null);
 
   const [isModalOpen, setIsModalOpen] = useState(false);
-  const [selectedAddress, setSelectedAddress] = useState('');
+  const [pickupPlaceSelectedAddress, setPickupPlaceSelectedAddress] = useState('');
+  const [arrivalSelectedAddress, setArrivalSelectedAddress] = useState('');
+  const [currentAddressType, setCurrentAddressType] = useState<
+    'pickup' | 'arrival' | null
+  >(null);
+
   const [insuranceRegistered, setInsuranceRegistered] = useState('');
 
   const openModal = () => {
@@ -35,96 +44,138 @@ const ProviderInfoPage: React.FC = () => {
   };
 
   const handleSelectAddress = (address: string) => {
-    setSelectedAddress(address);
+    if (currentAddressType === 'pickup') {
+      setPickupPlaceSelectedAddress(address);
+    } else if (currentAddressType === 'arrival') {
+      setArrivalSelectedAddress(address);
+    }
+    setCurrentAddressType(null);
     closeModal();
+  };
+
+  const openPickupAddressModal = () => {
+    setCurrentAddressType('pickup');
+    openModal();
+  };
+
+  const openArrivalAddressModal = () => {
+    setCurrentAddressType('arrival');
+    openModal();
   };
 
   return (
     <Container>
-      <Header title="탁송 차량 정보 입력" />
-      <Box component="form" noValidate autoComplete="off" mt={2}>
-        <InputField label="차량 브랜드" placeholder="브랜드를 입력하세요." />
-        <InputField label="차량 번호" placeholder="차량 번호를 입력하세요." />
-
-        <FormControl
-          sx={{ flexDirection: 'row', display: 'flex' }}
-          component="fieldset"
+      <Grid container rowSpacing={1} columnSpacing={{ xs: 1, sm: 2, md: 3 }}>
+        <Grid item xs={12}>
+          <Header title="탁송 차량 정보 입력" />
+        </Grid>
+        <Grid item xs={6} paddingLeft={5} paddingRight={5}>
+          <Box component="form" noValidate autoComplete="off" mt={2}>
+            <Autocomplete
+              value={brand}
+              onChange={(event, newValue) => {
+                setBrand(newValue);
+              }}
+              options={brands} // 서버에서 받아올 것임
+              renderInput={(params) => (
+                <TextField
+                  {...params}
+                  label="차량 브랜드"
+                  placeholder="브랜드를 입력하세요."
+                />
+              )}
+            />
+            <InputField label="차량 번호" placeholder="차량 번호를 입력하세요." />
+            <FormControl
+              sx={{ flexDirection: 'row', display: 'flex' }}
+              component="fieldset"
+            >
+              <FormLabel component="legend">운전자 보험 등록 여부</FormLabel>
+              <RadioGroup
+                row
+                value={insuranceRegistered}
+                onChange={(e) => setInsuranceRegistered(e.target.value)}
+              >
+                <FormControlLabel value="yes" control={<Radio />} label="예" />
+                <FormControlLabel value="no" control={<Radio />} label="아니오" />
+              </RadioGroup>
+            </FormControl>
+            <TextField
+              id="date"
+              label="탁송 날짜"
+              type="date"
+              defaultValue="2023-10-18"
+              sx={{ width: 220 }}
+              InputLabelProps={{
+                shrink: true,
+              }}
+            />
+            <TextField
+              id="time"
+              label="탁송 픽업 시간"
+              type="time"
+              defaultValue="07:30"
+              sx={{ width: 220 }}
+              InputLabelProps={{
+                shrink: true,
+              }}
+            />
+            <Box display="flex" alignItems="center">
+              <InputField
+                label="차량 출발지 픽업 장소"
+                placeholder="출발지를 입력하세요."
+                value={pickupPlaceSelectedAddress}
+              />
+              <button type="button" onClick={openPickupAddressModal}>
+                주소 검색
+              </button>
+            </Box>
+            <Box display="flex" alignItems="center">
+              <InputField
+                label="탁송 도착 장소"
+                placeholder="도착 장소를 입력하세요."
+                value={arrivalSelectedAddress}
+              />
+              <button type="button" onClick={openArrivalAddressModal}>
+                주소 검색
+              </button>
+            </Box>
+            <TextField
+              id="arrival-time"
+              label="탁송 도착 원하는 시간"
+              type="datetime-local"
+              defaultValue="2023-10-18T07:30"
+              sx={{ width: 220 }}
+              InputLabelProps={{
+                shrink: true,
+              }}
+            />
+            <AddressSearchModal
+              isOpen={isModalOpen}
+              onClose={closeModal}
+              onSelectAddress={handleSelectAddress}
+            />
+          </Box>
+        </Grid>
+        <Grid
+          item
+          xs={6}
+          sx={{ border: '1px solid grey', backgroundColor: '#bebebe' }}
+          mt={3}
         >
-          <FormLabel component="legend">운전자 보험 등록 여부</FormLabel>
-          <RadioGroup
-            row
-            value={insuranceRegistered}
-            onChange={(e) => setInsuranceRegistered(e.target.value)}
-          >
-            <FormControlLabel value="yes" control={<Radio />} label="예" />
-            <FormControlLabel value="no" control={<Radio />} label="아니오" />
-          </RadioGroup>
-        </FormControl>
-
-        <TextField
-          id="date"
-          label="탁송 날짜"
-          type="date"
-          defaultValue="2023-10-18"
-          sx={{ width: 220 }}
-          InputLabelProps={{
-            shrink: true,
-          }}
-        />
-
-        <TextField
-          id="time"
-          label="탁송 픽업 시간"
-          type="time"
-          defaultValue="07:30"
-          sx={{ width: 220 }}
-          InputLabelProps={{
-            shrink: true,
-          }}
-        />
-
-        <InputField
-          label="차량 출발지 픽업 장소"
-          placeholder="출발지를 입력하세요."
-        />
-
-        <Box display="flex" alignItems="center">
-          <InputField
-            label="탁송 도착 장소"
-            placeholder="도착 장소를 입력하세요."
-            value={selectedAddress}
-          />
-          <button type="button" onClick={openModal}>
-            주소 검색
-          </button>
-        </Box>
-
-        <TextField
-          id="arrival-time"
-          label="탁송 도착 원하는 시간"
-          type="datetime-local"
-          defaultValue="2023-10-18T07:30"
-          sx={{ width: 220 }}
-          InputLabelProps={{
-            shrink: true,
-          }}
-        />
-
-        <AddressSearchModal
-          isOpen={isModalOpen}
-          onClose={closeModal}
-          onSelectAddress={handleSelectAddress}
-        />
-
-        <Box mt={2}>
-          <ImageUploader label="사진 업로드" />
-        </Box>
-
-        <Box mt={2}>
-          <SubmitButton text="제출" />
-          <CancelButton text="취소" onClick={handleCancel} />
-        </Box>
-      </Box>
+          <Box mt={2}>
+            <ImageUploader label="사진 업로드" />
+          </Box>
+        </Grid>
+        <Grid item xs={12} mt={2} display={'flex'} justifyContent={'center'}>
+          <Box mt={2} mr={2}>
+            <SubmitButton text="제출" />
+          </Box>
+          <Box mt={2} mr={8}>
+            <CancelButton text="취소" onClick={handleCancel} />
+          </Box>
+        </Grid>
+      </Grid>
     </Container>
   );
 };
