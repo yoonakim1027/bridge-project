@@ -5,6 +5,7 @@ import Container from '@mui/material/Container';
 import Typography from '@mui/material/Typography';
 import Box from '@mui/material/Box';
 import { useNavigate } from 'react-router-dom';
+import Divider from '@mui/material/Divider';
 
 import axios from 'axios';
 import Cookies from 'js-cookie';
@@ -81,7 +82,7 @@ const Login: React.FC<Props> = ({ onLogin }) => {
 
       // -------------- Test 코드입니다 ----------------------
       try {
-        if (username === 'admin' && password === 'password') {
+        if (username === 'admin' && password === 'password1') {
           Cookies.set('token', '내가 만든 쿠키~', { expires: 7 });
           onLogin(username, password);
           navigate('/admin', { replace: true });
@@ -108,7 +109,7 @@ const Login: React.FC<Props> = ({ onLogin }) => {
 
   return (
     <Container component="main" maxWidth="xs" sx={{ mt: 10 }}>
-      <Typography component="h1" variant="h4" sx={{ textAlign: 'center', mb: 7 }}>
+      <Typography component="h1" variant="h4" sx={{ textAlign: 'center', mb: 5 }}>
         로그인
       </Typography>
       <Paper
@@ -165,10 +166,21 @@ const Login: React.FC<Props> = ({ onLogin }) => {
             <Typography sx={{ fontWeight: 600 }}>Login</Typography>
           </Button>
           <Box sx={{ display: 'flex', mt: 1, mb: 5 }}>
-            <Button fullWidth color="inherit" onClick={handleForgotPasswordClick}>
+            <Button
+              fullWidth
+              color="inherit"
+              onClick={handleForgotPasswordClick}
+              sx={{ color: 'gray' }}
+            >
               비밀번호 찾기
             </Button>
-            <Button fullWidth color="inherit" onClick={handleRegisterClick}>
+            <Divider orientation="vertical" flexItem variant="middle" />
+            <Button
+              fullWidth
+              color="inherit"
+              onClick={handleRegisterClick}
+              sx={{ color: 'gray' }}
+            >
               회원가입 하기
             </Button>
           </Box>

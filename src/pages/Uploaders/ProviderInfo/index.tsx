@@ -64,6 +64,11 @@ const ProviderInfoPage: React.FC = () => {
     setCurrentAddressType('arrival');
     openModal();
   };
+
+  const today = new Date();
+  // 날짜를 "YYYY-MM-DD" 형식으로 변환
+  const formattedDate = today.toISOString().split('T')[0];
+
   return (
     <Container>
       <Grid container rowSpacing={1} columnSpacing={{ xs: 1, sm: 2, md: 3 }}>
@@ -134,7 +139,7 @@ const ProviderInfoPage: React.FC = () => {
                   id="date"
                   label="탁송 날짜"
                   type="date"
-                  defaultValue="2023-10-18"
+                  defaultValue={formattedDate}
                   sx={{ width: '100%', marginRight: 3 }}
                   InputLabelProps={{ shrink: true }}
                 />
