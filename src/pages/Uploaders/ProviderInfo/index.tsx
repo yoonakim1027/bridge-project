@@ -188,7 +188,17 @@ const ProviderInfoPage: React.FC = () => {
           mt={3}
           sx={{ border: '1px solid grey', backgroundColor: '#bebebe' }}
         >
-          <Box mt={2} sx={{ textAlign: 'center', height: '100%' }}>
+          <Box
+            mt={2}
+            sx={{
+              height: '100%',
+              display: 'flex',
+              alignItems: 'center',
+              justifyContent: 'center',
+              ml: '-2rem',
+              mt: '-10px',
+            }}
+          >
             <ImageUploader label="사진 업로드" />
           </Box>
         </Grid>
