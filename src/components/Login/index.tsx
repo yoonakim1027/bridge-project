@@ -1,141 +1,183 @@
-import React, { useState, useEffect } from 'react';
-import TextField from '@mui/material/TextField';
-import Button from '@mui/material/Button';
-import Container from '@mui/material/Container';
-import Typography from '@mui/material/Typography';
-import Box from '@mui/material/Box';
-import { useNavigate } from 'react-router-dom';
-
+import React, { useState } from 'react';
 import axios from 'axios';
-import Cookies from 'js-cookie';
-import { Paper } from '@mui/material';
+import Header from '@/components/Delivery/Header';
+import InputField from '@/components/Delivery/InputField';
+import ImageUploader from '@/components/Delivery/ImageUploader';
+import SubmitButton from '@/components/Delivery/SubmitButton';
+import CancelButton from '@/components/Delivery/CancelButton';
+import AddressSearchModal from '@/components/Delivery/AddressSearchModal';
+import Container from '@mui/material/Container';
+import Box from '@mui/material/Box';
+import Grid from '@mui/material/Grid';
+import {
+  Radio,
+  RadioGroup,
+  FormControlLabel,
+  FormControl,
+  FormLabel,
+  TextField,
+  Autocomplete,
+} from '@mui/material';
+import brands from '@/data/brand.json';
 
-type Props = {
-  onLogin: (username: string, password: string) => void;
-};
+const ProviderInfoPage: React.FC = () => {
+  const handleCancel = () => {
+    console.log('Cancelled');
+  };
+  const [brand, setBrand] = useState<string | null>(null);
 
-const Login: React.FC<Props> = ({ onLogin }) => {
-  const [username, setUsername] = useState<string>('');
-  const [password, setPassword] = useState<string>('');
-  const navigate = useNavigate();
+  const [isModalOpen, setIsModalOpen] = useState(false);
+  const [pickupPlaceSelectedAddress, setPickupPlaceSelectedAddress] = useState('');
+  const [arrivalSelectedAddress, setArrivalSelectedAddress] = useState('');
+  const [currentAddressType, setCurrentAddressType] = useState<
+    'pickup' | 'arrival' | null
+  >(null);
 
-  useEffect(() => {
-    const token = Cookies.get('token');
-    if (token) {
-      onLogin('admin', 'password');
-      navigate('/admin', { replace: true });
+  const [insuranceRegistered, setInsuranceRegistered] = useState('');
+
+  const openModal = () => {
+    setIsModalOpen(true);
+  };
+
+  const closeModal = () => {
+    setIsModalOpen(false);
+  };
+
+  const handleSelectAddress = (address: string) => {
+    if (currentAddressType === 'pickup') {
+      setPickupPlaceSelectedAddress(address);
+    } else if (currentAddressType === 'arrival') {
+      setArrivalSelectedAddress(address);
     }
-  }, [onLogin]);
+    setCurrentAddressType(null);
+    closeModal();
+  };
 
-  const handleSubmit = async (e: React.FormEvent) => {
-    e.preventDefault();
-    // try {
-    //   const response = await axios.post('http://localhost:3000', {
-    //     memberId: username,
-    //     pwd: password,
-    //   });
-    //   if (response.data) {
-    //     // 로그인 성공 시 쿠키에 토큰 저장
-    //     Cookies.set('token', response.data.data, { expires: 7 }); // 7일 동안 유효
-    //     onLogin(username, password);
-    //     navigate('/', { replace: true });
-    //   }
-    // } catch (error) {
-    //   console.error('오류:', error);
-    // }
+  const openPickupAddressModal = () => {
+    setCurrentAddressType('pickup');
+    openModal();
+  };
 
-    // -------------- Test 코드입니다 ----------------------
-    try {
-      if (username === 'admin' && password === 'password') {
-        Cookies.set('token', '내가 만든 쿠키~', { expires: 7 });
-        onLogin(username, password);
-        navigate('/admin', { replace: true });
-      } else {
-        alert('Invalid credentials');
-      }
-    } catch (error) {
-      console.error('오류:', error);
-    }
+  const openArrivalAddressModal = () => {
+    setCurrentAddressType('arrival');
+    openModal();
   };
 
   return (
-    <Container component="main" maxWidth="lg">
-      <Paper
-        sx={{
-          display: 'flex',
-          flexDirection: 'column',
-          alignItems: 'center',
-          padding: 5,
-          marginTop: 20,
-        }}
-      >
-        <Typography component="h1" variant="h6">
-          로그인
-        </Typography>
-        <Box my={2} border={1} borderColor="divider" width="100%" />{' '}
-        <Box component="form" noValidate onSubmit={handleSubmit} sx={{ mt: 1 }}>
-          <TextField
-            variant="outlined"
-            margin="normal"
-            required
-            fullWidth
-            id="username"
-            label="ID"
-            name="username"
-            autoComplete="username"
-            autoFocus
-            size="small"
-            value={username}
-            onChange={(e) => setUsername(e.target.value)}
-          />
-          <TextField
-            variant="outlined"
-            margin="normal"
-            required
-            fullWidth
-            name="password"
-            label="Password"
-            type="password"
-            id="password"
-            size="small"
-            autoComplete="current-password"
-            value={password}
-            sx={{ width: '100%' }}
-            onChange={(e) => setPassword(e.target.value)}
-          />
-          <Button
-            type="submit"
-            fullWidth
-            variant="contained"
-            color="inherit"
-            sx={{ mt: 3, mb: 2 }}
-          >
-            <Typography sx={{ fontWeight: 600 }}>Login</Typography>
-          </Button>
-          <Button
-            type="submit"
-            fullWidth
-            variant="contained"
-            color="inherit"
-            disabled
-            sx={{ mt: 1, mb: 2 }}
-          >
-            <Typography sx={{ fontWeight: 600 }}>네이버로 로그인하기</Typography>
-          </Button>
-          <Button
-            type="submit"
-            fullWidth
-            variant="contained"
-            color="inherit"
-            disabled
-            sx={{ mt: 1, mb: 2 }}
-          >
-            <Typography sx={{ fontWeight: 600 }}>Google로 로그인하기</Typography>
-          </Button>
-        </Box>
-      </Paper>
+    <Container>
+      <Grid container rowSpacing={1} columnSpacing={{ xs: 1, sm: 2, md: 3 }}>
+        <Grid item xs={12}>
+          <Header title="탁송 차량 정보 입력" />
+        </Grid>
+        <Grid item xs={6} paddingLeft={5} paddingRight={5}>
+          <Box component="form" noValidate autoComplete="off" mt={2}>
+            <Autocomplete
+              value={brand}
+              onChange={(event, newValue) => {
+                setBrand(newValue);
+              }}
+              options={brands} // 서버에서 받아올 것임
+              renderInput={(params) => (
+                <TextField
+                  {...params}
+                  label="차량 브랜드"
+                  placeholder="브랜드를 입력하세요."
+                />
+              )}
+            />
+            <InputField label="차량 번호" placeholder="차량 번호를 입력하세요." />
+            <FormControl
+              sx={{ flexDirection: 'row', display: 'flex' }}
+              component="fieldset"
+            >
+              <FormLabel component="legend">운전자 보험 등록 여부</FormLabel>
+              <RadioGroup
+                row
+                value={insuranceRegistered}
+                onChange={(e) => setInsuranceRegistered(e.target.value)}
+              >
+                <FormControlLabel value="yes" control={<Radio />} label="예" />
+                <FormControlLabel value="no" control={<Radio />} label="아니오" />
+              </RadioGroup>
+            </FormControl>
+            <TextField
+              id="date"
+              label="탁송 날짜"
+              type="date"
+              defaultValue="2023-10-18"
+              sx={{ width: 220 }}
+              InputLabelProps={{
+                shrink: true,
+              }}
+            />
+            <TextField
+              id="time"
+              label="탁송 픽업 시간"
+              type="time"
+              defaultValue="07:30"
+              sx={{ width: 220 }}
+              InputLabelProps={{
+                shrink: true,
+              }}
+            />
+            <Box display="flex" alignItems="center">
+              <InputField
+                label="차량 출발지 픽업 장소"
+                placeholder="출발지를 입력하세요."
+                value={pickupPlaceSelectedAddress}
+              />
+              <button type="button" onClick={openPickupAddressModal}>
+                주소 검색
+              </button>
+            </Box>
+            <Box display="flex" alignItems="center">
+              <InputField
+                label="탁송 도착 장소"
+                placeholder="도착 장소를 입력하세요."
+                value={arrivalSelectedAddress}
+              />
+              <button type="button" onClick={openArrivalAddressModal}>
+                주소 검색
+              </button>
+            </Box>
+            <TextField
+              id="arrival-time"
+              label="탁송 도착 원하는 시간"
+              type="datetime-local"
+              defaultValue="2023-10-18T07:30"
+              sx={{ width: 220 }}
+              InputLabelProps={{
+                shrink: true,
+              }}
+            />
+            <AddressSearchModal
+              isOpen={isModalOpen}
+              onClose={closeModal}
+              onSelectAddress={handleSelectAddress}
+            />
+          </Box>
+        </Grid>
+        <Grid
+          item
+          xs={6}
+          sx={{ border: '1px solid grey', backgroundColor: '#bebebe' }}
+          mt={3}
+        >
+          <Box mt={2}>
+            <ImageUploader label="사진 업로드" />
+          </Box>
+        </Grid>
+        <Grid item xs={12} mt={2} display={'flex'} justifyContent={'center'}>
+          <Box mt={2} mr={2}>
+            <SubmitButton text="제출" />
+          </Box>
+          <Box mt={2} mr={8}>
+            <CancelButton text="취소" onClick={handleCancel} />
+          </Box>
+        </Grid>
+      </Grid>
     </Container>
   );
 };
 
-export default Login;
+export default ProviderInfoPage;
