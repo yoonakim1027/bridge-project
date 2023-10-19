@@ -17,6 +17,7 @@ import {
   FormLabel,
   TextField,
   Autocomplete,
+  Typography,
 } from '@mui/material';
 import brands from '@/data/brand.json';
 
@@ -71,20 +72,36 @@ const ProviderInfoPage: React.FC = () => {
         </Grid>
         <Grid item xs={6} paddingLeft={5} paddingRight={5}>
           <Box component="form" noValidate autoComplete="off" mt={2}>
-            <Autocomplete
-              value={brand}
-              onChange={(event, newValue) => {
-                setBrand(newValue);
-              }}
-              options={brands} // 서버에서 받아올 것임
-              renderInput={(params) => (
-                <TextField
-                  {...params}
-                  label="차량 브랜드"
-                  placeholder="브랜드를 입력하세요."
+            <Grid container>
+              <Grid
+                item
+                xs={3}
+                sx={{
+                  display: 'flex',
+                  justifyContent: 'center',
+                  alignItems: 'center',
+                }}
+              >
+                <Typography>차량 브랜드</Typography>
+              </Grid>
+              <Grid xs={9}>
+                <Autocomplete
+                  value={brand}
+                  onChange={(event, newValue) => {
+                    setBrand(newValue);
+                  }}
+                  options={brands} // 서버에서 받아올 것임
+                  renderInput={(params) => (
+                    <TextField
+                      {...params}
+                      label="차량 브랜드"
+                      placeholder="브랜드를 입력하세요."
+                    />
+                  )}
                 />
-              )}
-            />
+              </Grid>
+            </Grid>
+
             <InputField label="차량 번호" placeholder="차량 번호를 입력하세요." />
             <FormControl
               sx={{ flexDirection: 'row', display: 'flex' }}
