@@ -64,134 +64,149 @@ const ProviderInfoPage: React.FC = () => {
     setCurrentAddressType('arrival');
     openModal();
   };
-
   return (
     <Container>
       <Grid container rowSpacing={1} columnSpacing={{ xs: 1, sm: 2, md: 3 }}>
         <Grid item xs={12}>
           <Header title="탁송 차량 정보 입력" />
         </Grid>
-        <Grid item xs={6} pl={5} pr={5}>
+        <Grid item xs={8} pl={5} pr={5}>
           <Box component="form" noValidate autoComplete="off" mt={2}>
-            <Grid container>
-              <Grid
-                item
-                xs={3}
-                sx={{
-                  display: 'flex',
-                  justifyContent: 'center',
-                  alignItems: 'center',
-                }}
-              >
+            <Grid container rowSpacing={1} columnSpacing={{ xs: 1, sm: 2, md: 3 }}>
+              {/* 차량 브랜드 */}
+              <Grid item xs={3} mt={1}>
                 <Typography>차량 브랜드</Typography>
               </Grid>
-              <Grid xs={9}>
+              <Grid item xs={7} mt={1}>
                 <Autocomplete
                   value={brand}
-                  onChange={(event, newValue) => {
+                  onChange={(_event, newValue) => {
                     setBrand(newValue);
                   }}
-                  options={brands} // 서버에서 받아올 것임
+                  options={brands}
                   renderInput={(params) => (
                     <TextField
                       {...params}
                       label="차량 브랜드"
                       placeholder="브랜드를 입력하세요."
+                      fullWidth
                     />
                   )}
                 />
               </Grid>
-            </Grid>
-
-            <InputField label="차량 번호" placeholder="차량 번호를 입력하세요." />
-            <Grid item xs={12} mt={1} mb={1}>
-              <FormControl
-                sx={{ flexDirection: 'row', display: 'flex' }}
-                component="fieldset"
-              >
-                <FormLabel component="legend">운전자 보험 등록 여부</FormLabel>
-                <RadioGroup
-                  row
-                  value={insuranceRegistered}
-                  onChange={(e) => setInsuranceRegistered(e.target.value)}
+              {/* 차량 번호 */}
+              <Grid item xs={3} mt={1}>
+                <Typography>차량 번호</Typography>
+              </Grid>
+              <Grid item xs={7} mt={1}>
+                <TextField placeholder="차량 번호를 입력하세요." fullWidth />
+              </Grid>
+              {/* 운전자 보험 등록 여부 */}
+              <Grid item xs={3} mt={1}>
+                <Typography>운전자 보험 등록 여부</Typography>
+              </Grid>
+              <Grid item xs={7} mt={1}>
+                <FormControl
+                  sx={{ flexDirection: 'row', display: 'flex' }}
+                  component="fieldset"
                 >
-                  <FormControlLabel value="yes" control={<Radio />} label="예" />
-                  <FormControlLabel value="no" control={<Radio />} label="아니오" />
-                </RadioGroup>
-              </FormControl>
-            </Grid>
-            <Grid item xs={12} mt={1}>
-              <TextField
-                id="date"
-                label="탁송 날짜"
-                type="date"
-                defaultValue="2023-10-18"
-                sx={{ width: '48%', marginRight: 3 }}
-                InputLabelProps={{
-                  shrink: true,
-                }}
-              />
-              <TextField
-                id="time"
-                label="탁송 픽업 시간"
-                type="time"
-                defaultValue="07:30"
-                sx={{ width: '47%' }}
-                InputLabelProps={{
-                  shrink: true,
-                }}
-              />
-            </Grid>
-            <Box display="flex" alignItems="center">
-              <Grid item xs={10}>
+                  <RadioGroup
+                    row
+                    value={insuranceRegistered}
+                    onChange={(e) => setInsuranceRegistered(e.target.value)}
+                  >
+                    <FormControlLabel value="yes" control={<Radio />} label="예" />
+                    <FormControlLabel
+                      value="no"
+                      control={<Radio />}
+                      label="아니오"
+                    />
+                  </RadioGroup>
+                </FormControl>
+              </Grid>
+
+              {/* 탁송 날짜와 픽업 시간 */}
+              <Grid item xs={4} mt={1}>
+                <Typography>탁송 날짜</Typography>
+              </Grid>
+              <Grid item xs={8} mt={1}>
+                <TextField
+                  id="date"
+                  label="탁송 날짜"
+                  type="date"
+                  defaultValue="2023-10-18"
+                  sx={{ width: '100%', marginRight: 3 }}
+                  InputLabelProps={{ shrink: true }}
+                />
+              </Grid>
+              <Grid item xs={4} mt={1}>
+                <Typography>탁송 픽업 시간</Typography>
+              </Grid>
+              <Grid item xs={8} mt={1}>
+                <TextField
+                  id="time"
+                  label="탁송 픽업 시간"
+                  type="time"
+                  defaultValue="07:30"
+                  sx={{ width: '100%' }}
+                  InputLabelProps={{ shrink: true }}
+                />
+              </Grid>
+              {/* 차량 출발지 픽업 장소 */}
+              <Grid item xs={3} mt={2}>
+                <Typography>차량 출발지 픽업 장소</Typography>
+              </Grid>
+              <Grid item xs={7} mt={2}>
                 <InputField
                   label="차량 출발지 픽업 장소"
                   placeholder="출발지를 입력하세요."
                   value={pickupPlaceSelectedAddress}
                 />
               </Grid>
-              <Grid item xs={2} ml={2}>
+              <Grid item xs={2} mt={2}>
                 <Button
                   onClick={openPickupAddressModal}
-                  sx={{ mt: 3, mb: 2, height: '55px', width: '100%', p: 0 }}
+                  sx={{ mt: 3, height: '55px', width: '100%', p: 0 }}
                   size="large"
                   variant="outlined"
                 >
                   주소 검색
                 </Button>
               </Grid>
-            </Box>
-            <Box display="flex" alignItems="center" mb={2} mt={-3}>
-              <Grid item xs={10}>
+              {/* 탁송 도착 장소 */}
+              <Grid item xs={3} mt={2}>
+                <Typography>탁송 도착 장소</Typography>
+              </Grid>
+              <Grid item xs={7} mt={2}>
                 <InputField
                   label="탁송 도착 장소"
                   placeholder="도착 장소를 입력하세요."
                   value={arrivalSelectedAddress}
                 />
               </Grid>
-              <Grid item xs={2} ml={2}>
+              <Grid item xs={2} mt={2}>
                 <Button
                   onClick={openArrivalAddressModal}
+                  sx={{ mt: 3, height: '55px', width: '100%', p: 0 }}
                   size="large"
-                  sx={{ mt: 3, mb: 2, height: '55px', width: '100%', p: 0 }}
                   variant="outlined"
                 >
                   주소 검색
                 </Button>
               </Grid>
-            </Box>
-            <Grid item xs={12}>
-              <TextField
-                id="arrival-time"
-                label="탁송 도착 원하는 시간"
-                type="datetime-local"
-                defaultValue="2023-10-18T07:30"
-                sx={{ width: '100%' }}
-                InputLabelProps={{
-                  shrink: true,
-                }}
-              />
+              {/* 탁송 도착 원하는 시간 */}
+              <Grid item xs={12} mt={2}>
+                <TextField
+                  id="arrival-time"
+                  label="탁송 도착 원하는 시간"
+                  type="datetime-local"
+                  defaultValue="2023-10-18T07:30"
+                  sx={{ width: '100%' }}
+                  InputLabelProps={{ shrink: true }}
+                />
+              </Grid>
             </Grid>
+
             <AddressSearchModal
               isOpen={isModalOpen}
               onClose={closeModal}
@@ -201,7 +216,7 @@ const ProviderInfoPage: React.FC = () => {
         </Grid>
         <Grid
           item
-          xs={6}
+          xs={4}
           mt={3}
           sx={{ border: '1px solid grey', backgroundColor: '#bebebe' }}
         >
