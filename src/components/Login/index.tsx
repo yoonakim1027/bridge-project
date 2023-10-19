@@ -59,7 +59,7 @@ const Login: React.FC<Props> = ({ onLogin }) => {
   };
 
   return (
-    <Container component="main" maxWidth="lg">
+    <Container component="main" maxWidth="xs">
       <Paper
         sx={{
           display: 'flex',
