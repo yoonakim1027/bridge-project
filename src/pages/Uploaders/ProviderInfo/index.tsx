@@ -5,9 +5,6 @@ import ImageUploader from '@/components/Delivery/ImageUploader';
 import SubmitButton from '@/components/Delivery/SubmitButton';
 import CancelButton from '@/components/Delivery/CancelButton';
 import AddressSearchModal from '@/components/Delivery/AddressSearchModal';
-import Container from '@mui/material/Container';
-import Box from '@mui/material/Box';
-import Grid from '@mui/material/Grid';
 import {
   Radio,
   RadioGroup,
@@ -17,6 +14,9 @@ import {
   Autocomplete,
   Button,
   Typography,
+  Container,
+  Box,
+  Grid,
 } from '@mui/material';
 import brands from '@/data/brand.json';
 
@@ -42,6 +42,7 @@ const ProviderInfoPage: React.FC = () => {
   const [showTimeInput, setShowTimeInput] = useState(false);
   const [showPickupLocationInput, setShowPickupLocationInput] = useState(false);
   const [showArrivalLocationInput, setShowArrivalLocationInput] = useState(false);
+  const [showImageUpload, setImageUpload] = useState(false);
 
   const openModal = () => {
     setIsModalOpen(true);
@@ -288,6 +289,9 @@ const ProviderInfoPage: React.FC = () => {
                     defaultValue="2023-10-18T07:30"
                     sx={{ width: '100%' }}
                     InputLabelProps={{ shrink: true }}
+                    onChange={() => {
+                      setImageUpload(true);
+                    }}
                   />
                 </Grid>
               )}
@@ -300,26 +304,29 @@ const ProviderInfoPage: React.FC = () => {
             />
           </Box>
         </Grid>
-        <Grid
-          item
-          xs={4}
-          mt={3}
-          sx={{ border: '1px solid grey', backgroundColor: '#bebebe' }}
-        >
-          <Box
-            mt={2}
-            sx={{
-              height: '100%',
-              display: 'flex',
-              alignItems: 'center',
-              justifyContent: 'center',
-              ml: '-2rem',
-              mt: '-10px',
-            }}
+        {showImageUpload && (
+          <Grid
+            item
+            xs={4}
+            mt={3}
+            sx={{ border: '1px solid grey', backgroundColor: '#bebebe' }}
           >
-            <ImageUploader label="사진 업로드" />
-          </Box>
-        </Grid>
+            <Box
+              mt={2}
+              sx={{
+                height: '100%',
+                display: 'flex',
+                alignItems: 'center',
+                justifyContent: 'center',
+                ml: '-2rem',
+                mt: '-10px',
+              }}
+            >
+              <ImageUploader label="사진 업로드" />
+            </Box>
+          </Grid>
+        )}
+
         <Grid item xs={12} mt={2} display={'flex'} justifyContent={'center'}>
           <Box mt={2} mr={2}>
             <SubmitButton text="제출" />
