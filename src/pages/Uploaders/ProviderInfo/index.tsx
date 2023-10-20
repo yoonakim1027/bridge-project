@@ -17,6 +17,7 @@ import {
   Container,
   Box,
   Grid,
+  Fade,
 } from '@mui/material';
 import brands from '@/data/brand.json';
 
@@ -91,25 +92,29 @@ const ProviderInfoPage: React.FC = () => {
                 mt={1}
                 sx={{ display: 'flex', alignItems: 'center' }}
               >
-                <Typography>차량 브랜드</Typography>
+                <Fade in={true} timeout={1000}>
+                  <Typography>차량 브랜드</Typography>
+                </Fade>
               </Grid>
               <Grid item xs={9} mt={1}>
-                <Autocomplete
-                  value={brand}
-                  onChange={(_event, newValue) => {
-                    setBrand(newValue);
-                    setShowCarNumberInput(true);
-                  }}
-                  options={brands}
-                  renderInput={(params) => (
-                    <TextField
-                      {...params}
-                      label="차량 브랜드"
-                      placeholder="브랜드를 입력하세요."
-                      fullWidth
-                    />
-                  )}
-                />
+                <Fade in={true} timeout={1000}>
+                  <Autocomplete
+                    value={brand}
+                    onChange={(_event, newValue) => {
+                      setBrand(newValue);
+                      setShowCarNumberInput(true);
+                    }}
+                    options={brands}
+                    renderInput={(params) => (
+                      <TextField
+                        {...params}
+                        label="차량 브랜드"
+                        placeholder="브랜드를 입력하세요."
+                        fullWidth
+                      />
+                    )}
+                  />
+                </Fade>
               </Grid>
               {/* 차량 번호 */}
               {showCarNumberInput && (
@@ -120,14 +125,18 @@ const ProviderInfoPage: React.FC = () => {
                     mt={1}
                     sx={{ display: 'flex', alignItems: 'center' }}
                   >
-                    <Typography>차량 번호</Typography>
+                    <Fade in={showCarNumberInput} timeout={1000}>
+                      <Typography>차량 번호</Typography>
+                    </Fade>
                   </Grid>
                   <Grid item xs={9} mt={1}>
-                    <TextField
-                      placeholder="차량 번호를 입력하세요."
-                      fullWidth
-                      onChange={() => setShowInsuranceInput(true)}
-                    />
+                    <Fade in={showCarNumberInput} timeout={1000}>
+                      <TextField
+                        placeholder="차량 번호를 입력하세요."
+                        fullWidth
+                        onChange={() => setShowInsuranceInput(true)}
+                      />
+                    </Fade>
                   </Grid>
                 </>
               )}
@@ -140,38 +149,43 @@ const ProviderInfoPage: React.FC = () => {
                     mt={1}
                     sx={{ display: 'flex', alignItems: 'center' }}
                   >
-                    <Typography>운전자 보험 등록 여부</Typography>
+                    <Fade in={true} timeout={1000}>
+                      <Typography>운전자 보험 등록 여부</Typography>
+                    </Fade>
                   </Grid>
                   <Grid item xs={7} mt={1}>
-                    <FormControl
-                      sx={{ flexDirection: 'row', display: 'flex' }}
-                      component="fieldset"
-                    >
-                      <RadioGroup
-                        row
-                        value={insuranceRegistered}
-                        onChange={(e) => {
-                          setInsuranceRegistered(e.target.value);
-                          setShowDateInput(true);
-                        }}
+                    <Fade in={true} timeout={1000}>
+                      <FormControl
+                        sx={{ flexDirection: 'row', display: 'flex' }}
+                        component="fieldset"
                       >
-                        <FormControlLabel
-                          value="yes"
-                          control={<Radio />}
-                          label="예"
-                          sx={{ mr: '50px' }}
-                        />
-                        <FormControlLabel
-                          value="no"
-                          control={<Radio />}
-                          label="아니오"
-                        />
-                      </RadioGroup>
-                    </FormControl>
+                        <RadioGroup
+                          row
+                          value={insuranceRegistered}
+                          onChange={(e) => {
+                            setInsuranceRegistered(e.target.value);
+                            setShowDateInput(true);
+                          }}
+                        >
+                          <FormControlLabel
+                            value="yes"
+                            control={<Radio />}
+                            label="예"
+                            sx={{ mr: '50px' }}
+                          />
+                          <FormControlLabel
+                            value="no"
+                            control={<Radio />}
+                            label="아니오"
+                          />
+                        </RadioGroup>
+                      </FormControl>
+                    </Fade>
                   </Grid>
                 </>
               )}
               {/* 탁송 날짜와 픽업 시간 */}
+              {/*----------------------- 여기서 scrollTop 오류남 ㅠㅠ ------------------*/}
               {showDateInput && (
                 <>
                   <Grid
@@ -180,20 +194,24 @@ const ProviderInfoPage: React.FC = () => {
                     mt={1}
                     sx={{ display: 'flex', alignItems: 'center' }}
                   >
-                    <Typography>탁송 날짜</Typography>
+                    <Fade in={true} timeout={1000}>
+                      <Typography>탁송 날짜</Typography>
+                    </Fade>
                   </Grid>
                   <Grid item xs={9} mt={1}>
-                    <TextField
-                      id="date"
-                      label="탁송 날짜"
-                      type="date"
-                      defaultValue={formattedDate}
-                      sx={{ width: '100%', marginRight: 3 }}
-                      InputLabelProps={{ shrink: true }}
-                      onChange={() => {
-                        setShowPickupLocationInput(true);
-                      }}
-                    />
+                    <Fade in={true} timeout={1000}>
+                      <TextField
+                        id="date"
+                        label="탁송 날짜"
+                        type="date"
+                        defaultValue={formattedDate}
+                        sx={{ width: '100%', marginRight: 3 }}
+                        InputLabelProps={{ shrink: true }}
+                        onChange={() => {
+                          setShowPickupLocationInput(true);
+                        }}
+                      />
+                    </Fade>
                   </Grid>
                   <Grid
                     item
@@ -201,20 +219,24 @@ const ProviderInfoPage: React.FC = () => {
                     mt={1}
                     sx={{ display: 'flex', alignItems: 'center' }}
                   >
-                    <Typography>탁송 픽업 시간</Typography>
+                    <Fade in={true} timeout={1000}>
+                      <Typography>탁송 픽업 시간</Typography>
+                    </Fade>
                   </Grid>
                   <Grid item xs={9} mt={1}>
-                    <TextField
-                      id="time"
-                      label="탁송 픽업 시간"
-                      type="time"
-                      defaultValue="07:30"
-                      sx={{ width: '100%' }}
-                      InputLabelProps={{ shrink: true }}
-                      onChange={() => {
-                        setShowPickupLocationInput(true);
-                      }}
-                    />
+                    <Fade in={true} timeout={1000}>
+                      <TextField
+                        id="time"
+                        label="탁송 픽업 시간"
+                        type="time"
+                        defaultValue="07:30"
+                        sx={{ width: '100%' }}
+                        InputLabelProps={{ shrink: true }}
+                        onChange={() => {
+                          setShowPickupLocationInput(true);
+                        }}
+                      />
+                    </Fade>
                   </Grid>
                 </>
               )}
@@ -227,27 +249,33 @@ const ProviderInfoPage: React.FC = () => {
                     mt={2}
                     sx={{ display: 'flex', alignItems: 'center' }}
                   >
-                    <Typography>차량 출발지 픽업 장소</Typography>
+                    <Fade in={true} timeout={1000}>
+                      <Typography>차량 출발지 픽업 장소</Typography>
+                    </Fade>
                   </Grid>
                   <Grid item xs={7} mt={2}>
-                    <InputField
-                      label="차량 출발지 픽업 장소"
-                      placeholder="출발지를 입력하세요."
-                      value={pickupPlaceSelectedAddress}
-                      onChange={() => {
-                        setShowArrivalLocationInput(true);
-                      }}
-                    />
+                    <Fade in={true} timeout={1000}>
+                      <InputField
+                        label="차량 출발지 픽업 장소"
+                        placeholder="출발지를 입력하세요."
+                        value={pickupPlaceSelectedAddress}
+                        onChange={() => {
+                          setShowArrivalLocationInput(true);
+                        }}
+                      />
+                    </Fade>
                   </Grid>
                   <Grid item xs={2} mt={1}>
-                    <Button
-                      onClick={openPickupAddressModal}
-                      sx={{ mt: 3, height: '55px', width: '100%', p: 0 }}
-                      size="large"
-                      variant="outlined"
-                    >
-                      주소 검색
-                    </Button>
+                    <Fade in={true} timeout={1000}>
+                      <Button
+                        onClick={openPickupAddressModal}
+                        sx={{ mt: 3, height: '55px', width: '100%', p: 0 }}
+                        size="large"
+                        variant="outlined"
+                      >
+                        주소 검색
+                      </Button>
+                    </Fade>
                   </Grid>
                 </>
               )}
@@ -255,44 +283,52 @@ const ProviderInfoPage: React.FC = () => {
               {showArrivalLocationInput && (
                 <>
                   <Grid item xs={3} sx={{ display: 'flex', alignItems: 'center' }}>
-                    <Typography>탁송 도착 장소</Typography>
+                    <Fade in={true} timeout={1000}>
+                      <Typography>탁송 도착 장소</Typography>
+                    </Fade>
                   </Grid>
                   <Grid item xs={7}>
-                    <InputField
-                      label="탁송 도착 장소"
-                      placeholder="도착 장소를 입력하세요."
-                      value={arrivalSelectedAddress}
-                      onChange={() => {
-                        setShowTimeInput(true);
-                      }}
-                    />
+                    <Fade in={true} timeout={1000}>
+                      <InputField
+                        label="탁송 도착 장소"
+                        placeholder="도착 장소를 입력하세요."
+                        value={arrivalSelectedAddress}
+                        onChange={() => {
+                          setShowTimeInput(true);
+                        }}
+                      />
+                    </Fade>
                   </Grid>
                   <Grid item xs={2}>
-                    <Button
-                      onClick={openArrivalAddressModal}
-                      sx={{ mt: 2, height: '55px', width: '100%', p: 0 }}
-                      size="large"
-                      variant="outlined"
-                    >
-                      주소 검색
-                    </Button>
+                    <Fade in={true} timeout={1000}>
+                      <Button
+                        onClick={openArrivalAddressModal}
+                        sx={{ mt: 2, height: '55px', width: '100%', p: 0 }}
+                        size="large"
+                        variant="outlined"
+                      >
+                        주소 검색
+                      </Button>
+                    </Fade>
                   </Grid>
                 </>
               )}
               {/* 탁송 도착 원하는 시간 */}
               {showTimeInput && (
                 <Grid item xs={12} mt={2}>
-                  <TextField
-                    id="arrival-time"
-                    label="탁송 도착 원하는 시간"
-                    type="datetime-local"
-                    defaultValue="2023-10-18T07:30"
-                    sx={{ width: '100%' }}
-                    InputLabelProps={{ shrink: true }}
-                    onChange={() => {
-                      setImageUpload(true);
-                    }}
-                  />
+                  <Fade in={true} timeout={1000}>
+                    <TextField
+                      id="arrival-time"
+                      label="탁송 도착 원하는 시간"
+                      type="datetime-local"
+                      defaultValue="2023-10-18T07:30"
+                      sx={{ width: '100%' }}
+                      InputLabelProps={{ shrink: true }}
+                      onChange={() => {
+                        setImageUpload(true);
+                      }}
+                    />
+                  </Fade>
                 </Grid>
               )}
             </Grid>
@@ -305,28 +341,29 @@ const ProviderInfoPage: React.FC = () => {
           </Box>
         </Grid>
         {showImageUpload && (
-          <Grid
-            item
-            xs={4}
-            mt={3}
-            sx={{ border: '1px solid grey', backgroundColor: '#bebebe' }}
-          >
-            <Box
-              mt={2}
-              sx={{
-                height: '100%',
-                display: 'flex',
-                alignItems: 'center',
-                justifyContent: 'center',
-                ml: '-2rem',
-                mt: '-10px',
-              }}
+          <Fade in={true} timeout={1000}>
+            <Grid
+              item
+              xs={4}
+              mt={3}
+              sx={{ border: '1px solid grey', backgroundColor: '#bebebe' }}
             >
-              <ImageUploader label="사진 업로드" />
-            </Box>
-          </Grid>
+              <Box
+                mt={2}
+                sx={{
+                  height: '100%',
+                  display: 'flex',
+                  alignItems: 'center',
+                  justifyContent: 'center',
+                  ml: '-2rem',
+                  mt: '-10px',
+                }}
+              >
+                <ImageUploader label="사진 업로드" />
+              </Box>
+            </Grid>
+          </Fade>
         )}
-
         <Grid item xs={12} mt={2} display={'flex'} justifyContent={'center'}>
           <Box mt={2} mr={2}>
             <SubmitButton text="제출" />
