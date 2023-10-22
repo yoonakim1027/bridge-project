@@ -18,8 +18,10 @@ import {
   Grid,
   Fade,
   Box,
+  Collapse,
 } from '@mui/material';
 import brands from '@/data/brand.json';
+import { styled } from '@mui/system';
 
 const InputRow: React.FC<{
   label: string;
@@ -27,22 +29,38 @@ const InputRow: React.FC<{
   visible: boolean;
 }> = ({ label, component, visible }) => {
   return (
-    <>
-      {visible && (
-        <Fade in={true} timeout={1000}>
-          <Grid container>
-            <Grid item xs={3} mt={1} sx={{ display: 'flex', alignItems: 'center' }}>
-              <Typography>{label}</Typography>
-            </Grid>
-            <Grid item xs={9} mt={1}>
-              {component}
-            </Grid>
+    <Collapse in={visible}>
+      <div>
+        <Grid container>
+          <Grid item xs={3} mt={1} sx={{ display: 'flex', alignItems: 'center' }}>
+            <Typography>{label}</Typography>
           </Grid>
-        </Fade>
-      )}
-    </>
+          <Grid item xs={9} mt={1}>
+            {component}
+          </Grid>
+        </Grid>
+      </div>
+    </Collapse>
   );
 };
+
+const FadeIn = styled('div')({
+  opacity: 0,
+  animation: 'fadeInAnimation 0.5s forwards',
+  '@keyframes fadeInAnimation': {
+    to: {
+      opacity: 1,
+    },
+  },
+});
+interface FadeProps {
+  fadein: boolean;
+}
+
+const FadeEffect = styled('div')<FadeProps>(({ fadein }) => ({
+  transition: 'opacity 225ms cubic-bezier(0.4, 0, 0.2, 1) 0ms',
+  opacity: fadein ? 1 : 0,
+}));
 const ProviderInfoPage: React.FC = () => {
   const handleCancel = () => {
     console.log('Cancelled');
@@ -68,6 +86,35 @@ const ProviderInfoPage: React.FC = () => {
   const [showPickupLocationInput, setShowPickupLocationInput] = useState(false);
   const [showArrivalLocationInput, setShowArrivalLocationInput] = useState(false);
   const [showImageUpload, setImageUpload] = useState(false);
+  const openModal = () => {
+    setIsModalOpen(true);
+  };
+
+  const closeModal = () => {
+    setIsModalOpen(false);
+  };
+
+  const handleSelectAddress = (address: string) => {
+    if (currentAddressType === 'pickup') {
+      setPickupPlaceSelectedAddress(address);
+      setShowArrivalLocationInput(true);
+    } else if (currentAddressType === 'arrival') {
+      setArrivalSelectedAddress(address);
+      setShowTimeInput(true);
+    }
+    setCurrentAddressType(null);
+    closeModal();
+  };
+
+  const openPickupAddressModal = () => {
+    setCurrentAddressType('pickup');
+    openModal();
+  };
+
+  const openArrivalAddressModal = () => {
+    setCurrentAddressType('arrival');
+    openModal();
+  };
   // Input Field UI 로직을 위한 배열
   const inputFields = [
     {
@@ -145,28 +192,52 @@ const ProviderInfoPage: React.FC = () => {
     {
       label: '차량 출발지 픽업 장소',
       component: (
-        <InputField
-          label="차량 출발지 픽업 장소"
-          placeholder="출발지를 입력하세요."
-          value={pickupPlaceSelectedAddress}
-          onChange={() => {
-            setShowArrivalLocationInput(true);
-          }}
-        />
+        <>
+          <InputField
+            label="차량 출발지 픽업 장소"
+            placeholder="출발지를 입력하세요."
+            value={pickupPlaceSelectedAddress}
+            onChange={() => {
+              setShowArrivalLocationInput(true);
+            }}
+          />
+          <Grid item xs={2} mt={1}>
+            <Button
+              onClick={openPickupAddressModal}
+              sx={{ mt: 3, height: '55px', width: '100%', p: 0 }}
+              size="large"
+              variant="outlined"
+            >
+              주소 검색
+            </Button>
+          </Grid>
+        </>
       ),
       visible: showPickupLocationInput,
     },
     {
       label: '탁송 도착 장소',
       component: (
-        <InputField
-          label="탁송 도착 장소"
-          placeholder="도착 장소를 입력하세요."
-          value={arrivalSelectedAddress}
-          onChange={() => {
-            setShowTimeInput(true);
-          }}
-        />
+        <>
+          <InputField
+            label="탁송 도착 장소"
+            placeholder="도착 장소를 입력하세요."
+            value={arrivalSelectedAddress}
+            onChange={() => {
+              setShowTimeInput(true);
+            }}
+          />
+          <Grid item xs={2}>
+            <Button
+              onClick={openArrivalAddressModal}
+              sx={{ mt: 2, height: '55px', width: '100%', p: 0 }}
+              size="large"
+              variant="outlined"
+            >
+              주소 검색
+            </Button>
+          </Grid>
+        </>
       ),
       visible: showArrivalLocationInput,
     },
@@ -188,78 +259,51 @@ const ProviderInfoPage: React.FC = () => {
       visible: showTimeInput,
     },
   ];
-  const openModal = () => {
-    setIsModalOpen(true);
-  };
-
-  const closeModal = () => {
-    setIsModalOpen(false);
-  };
-
-  const handleSelectAddress = (address: string) => {
-    if (currentAddressType === 'pickup') {
-      setPickupPlaceSelectedAddress(address);
-    } else if (currentAddressType === 'arrival') {
-      setArrivalSelectedAddress(address);
-    }
-    setCurrentAddressType(null);
-    closeModal();
-  };
-
-  const openPickupAddressModal = () => {
-    setCurrentAddressType('pickup');
-    openModal();
-  };
-
-  const openArrivalAddressModal = () => {
-    setCurrentAddressType('arrival');
-    openModal();
-  };
 
   return (
-    <Container>
-      <Grid container rowSpacing={1} columnSpacing={{ xs: 1, sm: 2, md: 3 }}>
-        <Grid item xs={12}>
-          <Header title="탁송 차량 정보 입력" />
-        </Grid>
-        <Grid item xs={8} pl={5} pr={5}>
-          <Box component="form" noValidate autoComplete="off" mt={2}>
-            <Grid container rowSpacing={1} columnSpacing={{ xs: 1, sm: 2, md: 3 }}>
-              {/* 차량 브랜드 */}
-              <Grid
-                item
-                xs={3}
-                mt={1}
-                sx={{ display: 'flex', alignItems: 'center' }}
-              >
-                <Fade in={true} timeout={1000}>
-                  <Typography>차량 브랜드</Typography>
-                </Fade>
-              </Grid>
-              <Grid item xs={9} mt={1}>
-                <Fade in={true} timeout={1000}>
-                  <Autocomplete
-                    value={brand}
-                    onChange={(_event, newValue) => {
-                      setBrand(newValue);
-                      setShowCarNumberInput(true);
-                    }}
-                    options={brands}
-                    renderInput={(params) => (
-                      <TextField
-                        {...params}
-                        label="차량 브랜드"
-                        placeholder="브랜드를 입력하세요."
-                        fullWidth
-                      />
-                    )}
-                  />
-                </Fade>
-              </Grid>
+    <FadeEffect fadein={true}>
+      <Container>
+        <Grid container rowSpacing={1} spacing={{ xs: 1, sm: 2, md: 3 }}>
+          <Grid item xs={12}>
+            <Header title="탁송 차량 정보 입력" />
+          </Grid>
+          <Grid item xs={8} pl={5} pr={5}>
+            <Box component="form" noValidate autoComplete="off" mt={2}>
+              <Grid container rowSpacing={1} spacing={{ xs: 1, sm: 2, md: 3 }}>
+                {/* 차량 브랜드 */}
+                <Grid
+                  item
+                  xs={3}
+                  mt={1}
+                  sx={{ display: 'flex', alignItems: 'center' }}
+                >
+                  <Collapse in={true}>
+                    <Typography>차량 브랜드</Typography>
+                  </Collapse>
+                </Grid>
+                <Grid item xs={9} mt={1}>
+                  <Collapse in={true}>
+                    <Autocomplete
+                      value={brand}
+                      onChange={(_event, newValue) => {
+                        setBrand(newValue);
+                        setShowCarNumberInput(true);
+                      }}
+                      options={brands}
+                      renderInput={(params) => (
+                        <TextField
+                          {...params}
+                          label="차량 브랜드"
+                          placeholder="브랜드를 입력하세요."
+                          fullWidth
+                        />
+                      )}
+                    />
+                  </Collapse>
+                </Grid>
 
-              {inputFields.map(
-                (field, index) =>
-                  field.visible && (
+                {inputFields.map((field, index) =>
+                  field.visible ? (
                     <>
                       <Grid
                         item
@@ -267,62 +311,62 @@ const ProviderInfoPage: React.FC = () => {
                         mt={1}
                         sx={{ display: 'flex', alignItems: 'center' }}
                       >
-                        <Fade in={field.visible} timeout={1000}>
+                        <Collapse in={field.visible}>
                           <Typography>{field.label}</Typography>
-                        </Fade>
+                        </Collapse>
                       </Grid>
                       <Grid item xs={9} mt={1}>
-                        <Fade in={field.visible} timeout={1000}>
-                          {field.component}
-                        </Fade>
+                        <Collapse in={field.visible}>{field.component}</Collapse>
                       </Grid>
                     </>
-                  ),
-              )}
-            </Grid>
+                  ) : null,
+                )}
+              </Grid>
 
-            <AddressSearchModal
-              isOpen={isModalOpen}
-              onClose={closeModal}
-              onSelectAddress={handleSelectAddress}
-            />
-          </Box>
-        </Grid>
-        {showImageUpload && (
-          <Fade in={true} timeout={1000}>
-            <Grid
-              item
-              xs={4}
-              mt={3}
-              sx={{ border: '1px solid grey', backgroundColor: '#bebebe' }}
-            >
-              <Box
-                mt={2}
-                sx={{
-                  height: '100%',
-                  display: 'flex',
-                  alignItems: 'center',
-                  justifyContent: 'center',
-                  ml: '-2rem',
-                  mt: '-10px',
-                }}
+              <AddressSearchModal
+                isOpen={isModalOpen}
+                onClose={closeModal}
+                onSelectAddress={handleSelectAddress}
+              />
+            </Box>
+          </Grid>
+
+          {showImageUpload && (
+            <Collapse in={true}>
+              <Grid
+                item
+                xs={4}
+                mt={3}
+                sx={{ border: '1px solid grey', backgroundColor: '#bebebe' }}
               >
-                <ImageUploader label="사진 업로드" />
-              </Box>
-            </Grid>
-          </Fade>
-        )}
-        <Grid item xs={12} mt={2} display={'flex'} justifyContent={'center'}>
-          <Box mt={2} mr={2}>
-            <SubmitButton text="제출" />
-          </Box>
-          <Box mt={2} mr={8}>
-            <CancelButton text="취소" onClick={handleCancel} />
-          </Box>
+                <Box
+                  mt={2}
+                  sx={{
+                    height: '100%',
+                    display: 'flex',
+                    alignItems: 'center',
+                    justifyContent: 'center',
+                    ml: '-2rem',
+                    mt: '-10px',
+                  }}
+                >
+                  <ImageUploader label="사진 업로드" />
+                </Box>
+              </Grid>
+            </Collapse>
+          )}
+
+          <Grid item xs={12} mt={2} display={'flex'} justifyContent={'center'}>
+            <Box mt={2} mr={2}>
+              <SubmitButton text="제출" />
+            </Box>
+            <Box mt={2} mr={8}>
+              <CancelButton text="취소" onClick={handleCancel} />
+            </Box>
+          </Grid>
         </Grid>
-      </Grid>
-    </Container>
+      </Container>
+    </FadeEffect>
   );
 };
-
 export default ProviderInfoPage;
