@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useRef, useState } from 'react';
 import Header from '@/components/Delivery/Header';
 import InputField from '@/components/Delivery/InputField';
 import ImageUploader from '@/components/Delivery/ImageUploader';
@@ -86,6 +86,24 @@ const ProviderInfoPage: React.FC = () => {
   const [showPickupLocationInput, setShowPickupLocationInput] = useState(false);
   const [showArrivalLocationInput, setShowArrivalLocationInput] = useState(false);
   const [showImageUpload, setImageUpload] = useState(false);
+  const [showSubmitButton, setShowSubmitButton] = useState(false);
+  const [carNumberPart1, setCarNumberPart1] = useState(''); // 2 or 3자리 숫자
+  const [carNumberPart2, setCarNumberPart2] = useState(''); // 한글 한 글자
+  const [carNumberPart3, setCarNumberPart3] = useState(''); // 4자리 숫자
+
+  // 차량 번호 유효성 검사
+  function isValidCarNumber(value) {
+    const regex = /^\d{2,3}[가-힣]{1}\s\d{4}$/;
+    return regex.test(value);
+  }
+  const [isValid, setIsValid] = useState({
+    carNumber: true,
+    carNumberPart1: true,
+    carNumberPart2: true,
+    carNumberPart3: true,
+    // ... 다른 유효성 검사 결과를 위한 상태 추가 예정
+  });
+
   const openModal = () => {
     setIsModalOpen(true);
   };
@@ -115,16 +133,87 @@ const ProviderInfoPage: React.FC = () => {
     setCurrentAddressType('arrival');
     openModal();
   };
+  // 두 필드의 값을 하나로 합치는 함수
+  const getFullCarNumber = () => {
+    return `${carNumberPart1}${carNumberPart2} ${carNumberPart3}`;
+  };
+
+  const carNumber = getFullCarNumber();
+  const secondInputRef = useRef(null);
+  const thirdInputRef = useRef(null);
+
   // Input Field UI 로직을 위한 배열
   const inputFields = [
     {
       label: '차량 번호',
       component: (
-        <TextField
-          placeholder="차량 번호를 입력하세요."
-          fullWidth
-          onChange={() => setShowInsuranceInput(true)}
-        />
+        <Grid container spacing={2} alignItems="center">
+          <Grid item xs={3}>
+            <TextField
+              placeholder="123"
+              fullWidth
+              variant="standard"
+              inputProps={{ maxLength: 3 }}
+              onChange={(e) => {
+                const value = e.target.value;
+                setCarNumberPart1(value);
+                if (value.length === 3) {
+                  secondInputRef.current?.focus();
+                }
+              }}
+              error={!isValid.carNumberPart1}
+              helperText={
+                !isValid.carNumberPart1 ? '2~3자리 숫자를 입력하세요.' : ''
+              }
+            />
+          </Grid>
+          <Grid item xs={2}>
+            <TextField
+              variant="standard"
+              placeholder="가"
+              fullWidth
+              inputProps={{ maxLength: 1 }}
+              inputRef={secondInputRef}
+              onChange={(e) => {
+                const value = e.target.value;
+                // 한글 한 글자인지 확인하는 정규표현식
+                const isValidKorean = /^[가-힣]$/;
+
+                if (isValidKorean.test(value)) {
+                  setCarNumberPart2(value);
+                  if (value.length === 1) {
+                    thirdInputRef.current?.focus();
+                  }
+                } else {
+                  // 유효하지 않을 경우, 에러 처리를 여기에 추가할 수 있습니다.
+                }
+              }}
+              error={!isValid.carNumberPart2}
+              helperText={!isValid.carNumberPart2 ? '한글을 입력하세요.' : ''}
+            />
+          </Grid>
+          <Grid item xs={4}>
+            <TextField
+              variant="standard"
+              placeholder="1234"
+              fullWidth
+              inputProps={{ maxLength: 4 }}
+              inputRef={thirdInputRef}
+              onChange={(e) => {
+                const value = e.target.value;
+                const isValidNumber = /^[0-9]{4}$/; // 4자리 숫자인지 확인하는 정규 표현식
+
+                setCarNumberPart3(value);
+
+                if (isValidNumber.test(value)) {
+                  setShowInsuranceInput(true);
+                }
+              }}
+              error={!isValid.carNumberPart3}
+              helperText={!isValid.carNumberPart3 ? '4자리 숫자를 입력하세요.' : ''}
+            />
+          </Grid>
+        </Grid>
       ),
       visible: showCarNumberInput,
     },
@@ -258,7 +347,7 @@ const ProviderInfoPage: React.FC = () => {
           sx={{ width: '100%' }}
           InputLabelProps={{ shrink: true }}
           onChange={() => {
-            setImageUpload(true);
+            setShowSubmitButton(true);
           }}
         />
       ),
@@ -268,7 +357,7 @@ const ProviderInfoPage: React.FC = () => {
 
   return (
     <FadeEffect fadein={true}>
-      <Container>
+      <Container sx={{ justifyContent: 'center', display: 'flex' }}>
         <Grid container rowSpacing={1} spacing={{ xs: 1, sm: 2, md: 3 }}>
           <Grid item xs={12}>
             <Header title="탁송 차량 정보 입력" />
@@ -337,39 +426,44 @@ const ProviderInfoPage: React.FC = () => {
             </Box>
           </Grid>
 
-          {showImageUpload && (
-            <Collapse in={true}>
-              <Grid
-                item
-                xs={4}
-                mt={3}
-                sx={{ border: '1px solid grey', backgroundColor: '#bebebe' }}
-              >
-                <Box
-                  mt={2}
-                  sx={{
-                    height: '100%',
-                    display: 'flex',
-                    alignItems: 'center',
-                    justifyContent: 'center',
-                    ml: '-2rem',
-                    mt: '-10px',
-                  }}
-                >
-                  <ImageUploader label="사진 업로드" />
-                </Box>
-              </Grid>
-            </Collapse>
+          {showSubmitButton && (
+            <Grid item xs={12} mt={2} display={'flex'} justifyContent={'center'}>
+              <Box mt={2} mr={2}>
+                <SubmitButton text="제출" />
+              </Box>
+              <Box mt={2} mr={8}>
+                <CancelButton text="취소" onClick={handleCancel} />
+              </Box>
+            </Grid>
           )}
 
-          <Grid item xs={12} mt={2} display={'flex'} justifyContent={'center'}>
-            <Box mt={2} mr={2}>
-              <SubmitButton text="제출" />
-            </Box>
-            <Box mt={2} mr={8}>
-              <CancelButton text="취소" onClick={handleCancel} />
-            </Box>
-          </Grid>
+          {/* 주석 처리된 이미지 업로드 부분 (필요한 경우 주석 해제) */}
+          {/* 
+        {showImageUpload && (
+          <Collapse in={true}>
+            <Grid
+              item
+              xs={4}
+              mt={3}
+              sx={{ border: '1px solid grey', backgroundColor: '#bebebe' }}
+            >
+              <Box
+                mt={2}
+                sx={{
+                  height: '100%',
+                  display: 'flex',
+                  alignItems: 'center',
+                  justifyContent: 'center',
+                  ml: '-2rem',
+                  mt: '-10px',
+                }}
+              >
+                <ImageUploader label="사진 업로드" />
+              </Box>
+            </Grid>
+          </Collapse>
+        )}
+        */}
         </Grid>
       </Container>
     </FadeEffect>
