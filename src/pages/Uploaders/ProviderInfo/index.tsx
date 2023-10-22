@@ -156,7 +156,11 @@ const ProviderInfoPage: React.FC = () => {
               inputProps={{ maxLength: 3 }}
               onChange={(e) => {
                 const value = e.target.value;
+                const isValidNumberPart1 = /^[0-9]{2,3}$/;
+
                 setCarNumberPart1(value);
+                isValid.carNumberPart1 = isValidNumberPart1.test(value);
+
                 if (value.length === 3) {
                   secondInputRef.current?.focus();
                 }
@@ -176,22 +180,29 @@ const ProviderInfoPage: React.FC = () => {
               inputRef={secondInputRef}
               onChange={(e) => {
                 const value = e.target.value;
-                // 한글 한 글자인지 확인하는 정규표현식
                 const isValidKorean = /^[가-힣]$/;
 
                 if (isValidKorean.test(value)) {
                   setCarNumberPart2(value);
+                  setIsValid((prevState) => ({
+                    ...prevState,
+                    carNumberPart2: true,
+                  }));
                   if (value.length === 1) {
                     thirdInputRef.current?.focus();
                   }
                 } else {
-                  // 유효하지 않을 경우, 에러 처리를 여기에 추가할 수 있습니다.
+                  setIsValid((prevState) => ({
+                    ...prevState,
+                    carNumberPart2: false,
+                  }));
                 }
               }}
               error={!isValid.carNumberPart2}
               helperText={!isValid.carNumberPart2 ? '한글을 입력하세요.' : ''}
             />
           </Grid>
+
           <Grid item xs={4}>
             <TextField
               variant="standard"
@@ -201,9 +212,10 @@ const ProviderInfoPage: React.FC = () => {
               inputRef={thirdInputRef}
               onChange={(e) => {
                 const value = e.target.value;
-                const isValidNumber = /^[0-9]{4}$/; // 4자리 숫자인지 확인하는 정규 표현식
+                const isValidNumber = /^[0-9]{4}$/;
 
                 setCarNumberPart3(value);
+                isValid.carNumberPart3 = isValidNumber.test(value);
 
                 if (isValidNumber.test(value)) {
                   setShowInsuranceInput(true);
