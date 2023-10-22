@@ -192,26 +192,28 @@ const ProviderInfoPage: React.FC = () => {
     {
       label: '차량 출발지 픽업 장소',
       component: (
-        <>
-          <InputField
-            label="차량 출발지 픽업 장소"
-            placeholder="출발지를 입력하세요."
-            value={pickupPlaceSelectedAddress}
-            onChange={() => {
-              setShowArrivalLocationInput(true);
-            }}
-          />
-          <Grid item xs={2} mt={1}>
+        <Grid container alignItems="center">
+          <Grid item xs={7} mt={2}>
+            <InputField
+              label="차량 출발지 픽업 장소"
+              placeholder="출발지를 입력하세요."
+              value={pickupPlaceSelectedAddress}
+              onChange={() => {
+                setShowArrivalLocationInput(true);
+              }}
+            />
+          </Grid>
+          <Grid item xs={2} mt={3}>
             <Button
               onClick={openPickupAddressModal}
-              sx={{ mt: 3, height: '55px', width: '100%', p: 0 }}
+              sx={{ height: '55px', width: '100%', p: 0 }}
               size="large"
               variant="outlined"
             >
               주소 검색
             </Button>
           </Grid>
-        </>
+        </Grid>
       ),
       visible: showPickupLocationInput,
     },
@@ -219,23 +221,27 @@ const ProviderInfoPage: React.FC = () => {
       label: '탁송 도착 장소',
       component: (
         <>
-          <InputField
-            label="탁송 도착 장소"
-            placeholder="도착 장소를 입력하세요."
-            value={arrivalSelectedAddress}
-            onChange={() => {
-              setShowTimeInput(true);
-            }}
-          />
-          <Grid item xs={2}>
-            <Button
-              onClick={openArrivalAddressModal}
-              sx={{ mt: 2, height: '55px', width: '100%', p: 0 }}
-              size="large"
-              variant="outlined"
-            >
-              주소 검색
-            </Button>
+          <Grid container alignItems="center">
+            <Grid item xs={7}>
+              <InputField
+                label="탁송 도착 장소"
+                placeholder="도착 장소를 입력하세요."
+                value={arrivalSelectedAddress}
+                onChange={() => {
+                  setShowTimeInput(true);
+                }}
+              />
+            </Grid>
+            <Grid item xs={2} mb={1}>
+              <Button
+                onClick={openArrivalAddressModal}
+                sx={{ mt: 2, height: '55px', width: '100%', p: 0 }}
+                size="large"
+                variant="outlined"
+              >
+                주소 검색
+              </Button>
+            </Grid>
           </Grid>
         </>
       ),
