@@ -15,17 +15,41 @@ import {
   Button,
   Typography,
   Container,
-  Box,
   Grid,
   Fade,
+  Box,
 } from '@mui/material';
 import brands from '@/data/brand.json';
 
+const InputRow: React.FC<{
+  label: string;
+  component: JSX.Element;
+  visible: boolean;
+}> = ({ label, component, visible }) => {
+  return (
+    <>
+      {visible && (
+        <Fade in={true} timeout={1000}>
+          <Grid container>
+            <Grid item xs={3} mt={1} sx={{ display: 'flex', alignItems: 'center' }}>
+              <Typography>{label}</Typography>
+            </Grid>
+            <Grid item xs={9} mt={1}>
+              {component}
+            </Grid>
+          </Grid>
+        </Fade>
+      )}
+    </>
+  );
+};
 const ProviderInfoPage: React.FC = () => {
   const handleCancel = () => {
     console.log('Cancelled');
   };
   const [brand, setBrand] = useState<string | null>(null);
+  const today = new Date();
+  const formattedDate = today.toISOString().split('T')[0];
 
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [pickupPlaceSelectedAddress, setPickupPlaceSelectedAddress] = useState('');
@@ -44,7 +68,126 @@ const ProviderInfoPage: React.FC = () => {
   const [showPickupLocationInput, setShowPickupLocationInput] = useState(false);
   const [showArrivalLocationInput, setShowArrivalLocationInput] = useState(false);
   const [showImageUpload, setImageUpload] = useState(false);
-
+  // Input Field UI 로직을 위한 배열
+  const inputFields = [
+    {
+      label: '차량 번호',
+      component: (
+        <TextField
+          placeholder="차량 번호를 입력하세요."
+          fullWidth
+          onChange={() => setShowInsuranceInput(true)}
+        />
+      ),
+      visible: showCarNumberInput,
+    },
+    {
+      label: '운전자 보험 등록 여부',
+      component: (
+        <FormControl
+          sx={{ flexDirection: 'row', display: 'flex' }}
+          component="fieldset"
+        >
+          <RadioGroup
+            row
+            value={insuranceRegistered}
+            onChange={(e) => {
+              setInsuranceRegistered(e.target.value);
+              setShowDateInput(true);
+            }}
+          >
+            <FormControlLabel
+              value="yes"
+              control={<Radio />}
+              label="예"
+              sx={{ mr: '50px' }}
+            />
+            <FormControlLabel value="no" control={<Radio />} label="아니오" />
+          </RadioGroup>
+        </FormControl>
+      ),
+      visible: showInsuranceInput,
+    },
+    {
+      label: '탁송 날짜',
+      component: (
+        <TextField
+          id="date"
+          label="탁송 날짜"
+          type="date"
+          defaultValue={formattedDate}
+          sx={{ width: '100%', marginRight: 3 }}
+          InputLabelProps={{ shrink: true }}
+          onChange={() => {
+            setShowPickupLocationInput(true);
+          }}
+        />
+      ),
+      visible: showDateInput,
+    },
+    {
+      label: '탁송 픽업 시간',
+      component: (
+        <TextField
+          id="time"
+          label="탁송 픽업 시간"
+          type="time"
+          defaultValue="07:30"
+          sx={{ width: '100%' }}
+          InputLabelProps={{ shrink: true }}
+          onChange={() => {
+            setShowPickupLocationInput(true);
+          }}
+        />
+      ),
+      visible: showDateInput,
+    },
+    {
+      label: '차량 출발지 픽업 장소',
+      component: (
+        <InputField
+          label="차량 출발지 픽업 장소"
+          placeholder="출발지를 입력하세요."
+          value={pickupPlaceSelectedAddress}
+          onChange={() => {
+            setShowArrivalLocationInput(true);
+          }}
+        />
+      ),
+      visible: showPickupLocationInput,
+    },
+    {
+      label: '탁송 도착 장소',
+      component: (
+        <InputField
+          label="탁송 도착 장소"
+          placeholder="도착 장소를 입력하세요."
+          value={arrivalSelectedAddress}
+          onChange={() => {
+            setShowTimeInput(true);
+          }}
+        />
+      ),
+      visible: showArrivalLocationInput,
+    },
+    {
+      label: '탁송 도착 원하는 시간',
+      component: (
+        <TextField
+          id="arrival-time"
+          label="탁송 도착 원하는 시간"
+          type="datetime-local"
+          defaultValue="2023-10-18T07:30"
+          sx={{ width: '100%' }}
+          InputLabelProps={{ shrink: true }}
+          onChange={() => {
+            setImageUpload(true);
+          }}
+        />
+      ),
+      visible: showTimeInput,
+    },
+  ];
   const openModal = () => {
     setIsModalOpen(true);
   };
@@ -72,9 +215,6 @@ const ProviderInfoPage: React.FC = () => {
     setCurrentAddressType('arrival');
     openModal();
   };
-
-  const today = new Date();
-  const formattedDate = today.toISOString().split('T')[0];
 
   return (
     <Container>
@@ -116,220 +256,28 @@ const ProviderInfoPage: React.FC = () => {
                   />
                 </Fade>
               </Grid>
-              {/* 차량 번호 */}
-              {showCarNumberInput && (
-                <>
-                  <Grid
-                    item
-                    xs={3}
-                    mt={1}
-                    sx={{ display: 'flex', alignItems: 'center' }}
-                  >
-                    <Fade in={showCarNumberInput} timeout={1000}>
-                      <Typography>차량 번호</Typography>
-                    </Fade>
-                  </Grid>
-                  <Grid item xs={9} mt={1}>
-                    <Fade in={showCarNumberInput} timeout={1000}>
-                      <TextField
-                        placeholder="차량 번호를 입력하세요."
-                        fullWidth
-                        onChange={() => setShowInsuranceInput(true)}
-                      />
-                    </Fade>
-                  </Grid>
-                </>
-              )}
-              {/* 운전자 보험 등록 여부 */}
-              {showInsuranceInput && (
-                <>
-                  <Grid
-                    item
-                    xs={3}
-                    mt={1}
-                    sx={{ display: 'flex', alignItems: 'center' }}
-                  >
-                    <Fade in={true} timeout={1000}>
-                      <Typography>운전자 보험 등록 여부</Typography>
-                    </Fade>
-                  </Grid>
-                  <Grid item xs={7} mt={1}>
-                    <Fade in={true} timeout={1000}>
-                      <FormControl
-                        sx={{ flexDirection: 'row', display: 'flex' }}
-                        component="fieldset"
+
+              {inputFields.map(
+                (field, index) =>
+                  field.visible && (
+                    <>
+                      <Grid
+                        item
+                        xs={3}
+                        mt={1}
+                        sx={{ display: 'flex', alignItems: 'center' }}
                       >
-                        <RadioGroup
-                          row
-                          value={insuranceRegistered}
-                          onChange={(e) => {
-                            setInsuranceRegistered(e.target.value);
-                            setShowDateInput(true);
-                          }}
-                        >
-                          <FormControlLabel
-                            value="yes"
-                            control={<Radio />}
-                            label="예"
-                            sx={{ mr: '50px' }}
-                          />
-                          <FormControlLabel
-                            value="no"
-                            control={<Radio />}
-                            label="아니오"
-                          />
-                        </RadioGroup>
-                      </FormControl>
-                    </Fade>
-                  </Grid>
-                </>
-              )}
-              {/* 탁송 날짜와 픽업 시간 */}
-              {/*----------------------- 여기서 scrollTop 오류남 ㅠㅠ ------------------*/}
-              {showDateInput && (
-                <>
-                  <Grid
-                    item
-                    xs={3}
-                    mt={1}
-                    sx={{ display: 'flex', alignItems: 'center' }}
-                  >
-                    <Fade in={true} timeout={1000}>
-                      <Typography>탁송 날짜</Typography>
-                    </Fade>
-                  </Grid>
-                  <Grid item xs={9} mt={1}>
-                    <Fade in={true} timeout={1000}>
-                      <TextField
-                        id="date"
-                        label="탁송 날짜"
-                        type="date"
-                        defaultValue={formattedDate}
-                        sx={{ width: '100%', marginRight: 3 }}
-                        InputLabelProps={{ shrink: true }}
-                        onChange={() => {
-                          setShowPickupLocationInput(true);
-                        }}
-                      />
-                    </Fade>
-                  </Grid>
-                  <Grid
-                    item
-                    xs={3}
-                    mt={1}
-                    sx={{ display: 'flex', alignItems: 'center' }}
-                  >
-                    <Fade in={true} timeout={1000}>
-                      <Typography>탁송 픽업 시간</Typography>
-                    </Fade>
-                  </Grid>
-                  <Grid item xs={9} mt={1}>
-                    <Fade in={true} timeout={1000}>
-                      <TextField
-                        id="time"
-                        label="탁송 픽업 시간"
-                        type="time"
-                        defaultValue="07:30"
-                        sx={{ width: '100%' }}
-                        InputLabelProps={{ shrink: true }}
-                        onChange={() => {
-                          setShowPickupLocationInput(true);
-                        }}
-                      />
-                    </Fade>
-                  </Grid>
-                </>
-              )}
-              {/* 차량 출발지 픽업 장소 */}
-              {showPickupLocationInput && (
-                <>
-                  <Grid
-                    item
-                    xs={3}
-                    mt={2}
-                    sx={{ display: 'flex', alignItems: 'center' }}
-                  >
-                    <Fade in={true} timeout={1000}>
-                      <Typography>차량 출발지 픽업 장소</Typography>
-                    </Fade>
-                  </Grid>
-                  <Grid item xs={7} mt={2}>
-                    <Fade in={true} timeout={1000}>
-                      <InputField
-                        label="차량 출발지 픽업 장소"
-                        placeholder="출발지를 입력하세요."
-                        value={pickupPlaceSelectedAddress}
-                        onChange={() => {
-                          setShowArrivalLocationInput(true);
-                        }}
-                      />
-                    </Fade>
-                  </Grid>
-                  <Grid item xs={2} mt={1}>
-                    <Fade in={true} timeout={1000}>
-                      <Button
-                        onClick={openPickupAddressModal}
-                        sx={{ mt: 3, height: '55px', width: '100%', p: 0 }}
-                        size="large"
-                        variant="outlined"
-                      >
-                        주소 검색
-                      </Button>
-                    </Fade>
-                  </Grid>
-                </>
-              )}
-              {/* 탁송 도착 장소 */}
-              {showArrivalLocationInput && (
-                <>
-                  <Grid item xs={3} sx={{ display: 'flex', alignItems: 'center' }}>
-                    <Fade in={true} timeout={1000}>
-                      <Typography>탁송 도착 장소</Typography>
-                    </Fade>
-                  </Grid>
-                  <Grid item xs={7}>
-                    <Fade in={true} timeout={1000}>
-                      <InputField
-                        label="탁송 도착 장소"
-                        placeholder="도착 장소를 입력하세요."
-                        value={arrivalSelectedAddress}
-                        onChange={() => {
-                          setShowTimeInput(true);
-                        }}
-                      />
-                    </Fade>
-                  </Grid>
-                  <Grid item xs={2}>
-                    <Fade in={true} timeout={1000}>
-                      <Button
-                        onClick={openArrivalAddressModal}
-                        sx={{ mt: 2, height: '55px', width: '100%', p: 0 }}
-                        size="large"
-                        variant="outlined"
-                      >
-                        주소 검색
-                      </Button>
-                    </Fade>
-                  </Grid>
-                </>
-              )}
-              {/* 탁송 도착 원하는 시간 */}
-              {showTimeInput && (
-                <Grid item xs={12} mt={2}>
-                  <Fade in={true} timeout={1000}>
-                    <TextField
-                      id="arrival-time"
-                      label="탁송 도착 원하는 시간"
-                      type="datetime-local"
-                      defaultValue="2023-10-18T07:30"
-                      sx={{ width: '100%' }}
-                      InputLabelProps={{ shrink: true }}
-                      onChange={() => {
-                        setImageUpload(true);
-                      }}
-                    />
-                  </Fade>
-                </Grid>
+                        <Fade in={field.visible} timeout={1000}>
+                          <Typography>{field.label}</Typography>
+                        </Fade>
+                      </Grid>
+                      <Grid item xs={9} mt={1}>
+                        <Fade in={field.visible} timeout={1000}>
+                          {field.component}
+                        </Fade>
+                      </Grid>
+                    </>
+                  ),
               )}
             </Grid>
 
