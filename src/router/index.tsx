@@ -8,6 +8,7 @@ import AdminPage from '@/pages/Admin';
 import SignUpPage from '@/pages/SignUp';
 import ProviderSignUpForm from '@/components/Signup/ProviderSignUpForm';
 import ProviderSignUpPage from '@/pages/SignUp/ProviderSignUp/jndex';
+import SignUpMain from '@/pages/SignUp';
 
 interface RouterProps {
   isLoggedIn: boolean;
@@ -36,8 +37,9 @@ export default function Router({ isLoggedIn }: RouterProps) {
           path="*"
           element={isLoggedIn ? <Navigate to="/upload" /> : <Navigate to="/login" />}
         />
-        <Route path="/signUp" element={<SignUpPage />} />
+        {/* <Route path="/signUp" element={<SignUpPage />} /> */}
         <Route path="/providersignUp" element={<ProviderSignUpPage />} />
+        <Route path="/signUp" element={<SignUpMain />} />
       </Routes>
     </BrowserRouter>
   );
