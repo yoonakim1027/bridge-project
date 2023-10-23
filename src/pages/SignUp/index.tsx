@@ -5,7 +5,7 @@ import CheckForm from '@/components/Signup/CheckForm';
 
 const SignUpPage: React.FC = () => {
   return (
-    <Container maxWidth="sm" sx={{ mt: 5 }}>
+    <Container maxWidth="sm" sx={{ p: 7 }}>
       <Typography
         variant="h4"
         component="h1"

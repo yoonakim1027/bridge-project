@@ -6,6 +6,8 @@ import Sidebar from '@/components/Sidebar';
 import { SidebarProvider } from '@/contexts/SidebarContext';
 import AdminPage from '@/pages/Admin';
 import SignUpPage from '@/pages/SignUp';
+import ProviderSignUpForm from '@/components/Signup/ProviderSignUpForm';
+import ProviderSignUpPage from '@/pages/SignUp/ProviderSignUp/jndex';
 
 interface RouterProps {
   isLoggedIn: boolean;
@@ -35,6 +37,7 @@ export default function Router({ isLoggedIn }: RouterProps) {
           element={isLoggedIn ? <Navigate to="/upload" /> : <Navigate to="/login" />}
         />
         <Route path="/signUp" element={<SignUpPage />} />
+        <Route path="/providersignUp" element={<ProviderSignUpPage />} />
       </Routes>
     </BrowserRouter>
   );

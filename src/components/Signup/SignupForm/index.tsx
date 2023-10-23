@@ -3,6 +3,7 @@ import { Button, Typography } from '@mui/material';
 import InputField from '../InputField';
 import CheckForm from '../CheckForm';
 import { useNavigate } from 'react-router-dom';
+import SNSButton from '../SNSButton';
 
 const SignUpForm: React.FC = () => {
   const navigate = useNavigate();
@@ -28,9 +29,9 @@ const SignUpForm: React.FC = () => {
     console.log(formData);
   };
 
-  // 회원가입으로 이동할 함수
+  // 공급자 회원가입으로 이동할 함수
   const handleProviderClick = () => {
-    navigate('#');
+    navigate('/providersignUp');
   };
 
   return (
@@ -72,28 +73,7 @@ const SignUpForm: React.FC = () => {
       >
         <Typography sx={{ fontWeight: 600 }}>Sign Up</Typography>
       </Button>
-      <Button
-        type="submit"
-        fullWidth
-        variant="contained"
-        color="inherit"
-        disabled
-        size="large"
-        sx={{ mt: 1, mb: 2, height: 45 }}
-      >
-        <Typography sx={{ fontWeight: 600 }}>네이버로 회원가입</Typography>
-      </Button>
-      <Button
-        type="submit"
-        fullWidth
-        variant="contained"
-        color="inherit"
-        disabled
-        size="large"
-        sx={{ mt: 1, mb: 2, height: 45 }}
-      >
-        <Typography sx={{ fontWeight: 600 }}>Google로 회원가입</Typography>
-      </Button>
+      <SNSButton />
       <Button
         type="submit"
         fullWidth
