@@ -5,6 +5,7 @@ import ProviderInfoPage from '@/pages/Uploaders/ProviderInfo';
 import Sidebar from '@/components/Sidebar';
 import { SidebarProvider } from '@/contexts/SidebarContext';
 import AdminPage from '@/pages/Admin';
+import SignUpPage from '@/pages/SignUp';
 
 interface RouterProps {
   isLoggedIn: boolean;
@@ -33,6 +34,7 @@ export default function Router({ isLoggedIn }: RouterProps) {
           path="*"
           element={isLoggedIn ? <Navigate to="/upload" /> : <Navigate to="/login" />}
         />
+        <Route path="/signUp" element={<SignUpPage />} />
       </Routes>
     </BrowserRouter>
   );

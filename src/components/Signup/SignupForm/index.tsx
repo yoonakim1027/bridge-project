@@ -1,8 +1,12 @@
 import React, { useState } from 'react';
-import Button from '@mui/material/Button';
+import { Button, Typography } from '@mui/material';
 import InputField from '../InputField';
+import CheckForm from '../CheckForm';
+import { useNavigate } from 'react-router-dom';
 
 const SignUpForm: React.FC = () => {
+  const navigate = useNavigate();
+
   const [formData, setFormData] = useState({
     username: '',
     email: '',
@@ -24,8 +28,14 @@ const SignUpForm: React.FC = () => {
     console.log(formData);
   };
 
+  // 회원가입으로 이동할 함수
+  const handleProviderClick = () => {
+    navigate('#');
+  };
+
   return (
     <form onSubmit={handleSubmit}>
+      <Typography sx={{ mb: -1 }}>아이디</Typography>
       <InputField
         label="Username"
         value={formData.username}
@@ -33,6 +43,7 @@ const SignUpForm: React.FC = () => {
         name="username"
         placeholder="Enter username"
       />
+      <Typography sx={{ mt: 2, mb: -1 }}>이메일</Typography>
       <InputField
         label="Email"
         type="email"
@@ -41,6 +52,7 @@ const SignUpForm: React.FC = () => {
         name="email"
         placeholder="Enter email"
       />
+      <Typography sx={{ mt: 2, mb: -1 }}>비밀번호</Typography>
       <InputField
         label="Password"
         type="password"
@@ -49,8 +61,51 @@ const SignUpForm: React.FC = () => {
         name="password"
         placeholder="Enter password"
       />
-      <Button variant="contained" color="primary" type="submit">
-        Sign Up
+      <CheckForm />
+      <Button
+        variant="contained"
+        color="primary"
+        fullWidth
+        type="submit"
+        size="large"
+        sx={{ mt: 3, height: 45, mb: 5 }}
+      >
+        <Typography sx={{ fontWeight: 600 }}>Sign Up</Typography>
+      </Button>
+      <Button
+        type="submit"
+        fullWidth
+        variant="contained"
+        color="inherit"
+        disabled
+        size="large"
+        sx={{ mt: 1, mb: 2, height: 45 }}
+      >
+        <Typography sx={{ fontWeight: 600 }}>네이버로 회원가입</Typography>
+      </Button>
+      <Button
+        type="submit"
+        fullWidth
+        variant="contained"
+        color="inherit"
+        disabled
+        size="large"
+        sx={{ mt: 1, mb: 2, height: 45 }}
+      >
+        <Typography sx={{ fontWeight: 600 }}>Google로 회원가입</Typography>
+      </Button>
+      <Button
+        type="submit"
+        fullWidth
+        variant="text"
+        color="inherit"
+        size="large"
+        sx={{ mt: 2, mb: 2, height: 45 }}
+        onClick={handleProviderClick}
+      >
+        <Typography sx={{ fontWeight: 600, color: 'inherit' }}>
+          공급자로 가입하시나요?
+        </Typography>
       </Button>
     </form>
   );

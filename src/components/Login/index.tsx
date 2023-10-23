@@ -104,7 +104,7 @@ const Login: React.FC<Props> = ({ onLogin }) => {
 
   // 회원가입으로 이동할 함수
   const handleRegisterClick = () => {
-    navigate('/');
+    navigate('/signUp');
   };
 
   return (
