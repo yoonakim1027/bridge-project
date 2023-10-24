@@ -25,18 +25,36 @@ const SignUpMain: React.FC = () => {
           >
             회원가입
           </Typography>
-          <Container maxWidth="md" sx={{ p: 3 }}>
-            <InitSignUpSelect setSelected={setSelected} />
-          </Container>
+          <InitSignUpSelect setSelected={setSelected} />
         </div>
       </Collapse>
 
       <Collapse in={selected === '수요자'}>
-        <ChoiceConsumer setSelected={setSelected} />
+        <div>
+          <Typography
+            variant="h5"
+            component="h1"
+            gutterBottom
+            sx={{ fontWeight: 'bold', mt: 7 }}
+          >
+            수요자 회원가입
+          </Typography>
+          <ChoiceConsumer setSelected={setSelected} />
+        </div>
       </Collapse>
 
       <Collapse in={selected === '공급자'}>
-        <ChoiceProducer setSelected={setSelected} />
+        <div>
+          <Typography
+            variant="h5"
+            component="h1"
+            gutterBottom
+            sx={{ fontWeight: 'bold', mt: 7 }}
+          >
+            공급자 회원가입
+          </Typography>
+          <ChoiceProducer setSelected={setSelected} />
+        </div>
       </Collapse>
 
       <Collapse in={selected === '개인유저'}>
