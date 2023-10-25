@@ -7,36 +7,44 @@ interface ChoiceProducerProps {
 
 const ChoiceProducer: React.FC<ChoiceProducerProps> = ({ setSelected }) => {
   return (
-    <Container maxWidth="md" sx={{ p: 3 }}>
-      <Paper sx={{ p: 5, borderRadius: 2 }}>
-        <Typography
-          variant="h6"
-          component="h3"
-          gutterBottom
-          color={'gray'}
-          sx={{ mb: 5 }}
+    <Container maxWidth="xl" sx={{ m: 3 }}>
+      <Typography
+        variant="h4"
+        component="h1"
+        gutterBottom
+        sx={{ fontWeight: 'bold' }}
+      >
+        공급자 회원가입
+      </Typography>
+      <Typography variant="h5" component="h1" gutterBottom>
+        어떤 서비스를 원하시나요?
+      </Typography>
+      <div style={{ marginTop: '2rem' }}>
+        <Button
+          variant="contained"
+          size="large"
+          onClick={() => setSelected('탁송 회사')}
+          sx={{ mr: 3, width: 200 }}
         >
-          어떤 서비스를 원하시나요?
-        </Typography>
-        <div>
-          <Button
-            variant="outlined"
-            onClick={() => setSelected('탁송 회사')}
-            // startIcon={<LocalShippingIcon sx={{ width: 100, height: 100 }} />}
-            sx={{ width: 200, height: 150, fontSize: 20, mr: 5 }}
-          >
-            탁송 회사
-          </Button>
-          <Button
-            variant="outlined"
-            onClick={() => setSelected('탁송 프리랜서 기사')}
-            // startIcon={<LocalShippingIcon sx={{ width: 100, height: 100 }} />}
-            sx={{ width: 200, height: 150, fontSize: 20 }}
-          >
-            탁송 프리랜서 기사
-          </Button>
-        </div>
-      </Paper>
+          탁송 회사
+        </Button>
+        <Button
+          variant="outlined"
+          size="large"
+          onClick={() => setSelected('탁송 프리랜서 기사')}
+          sx={{ width: 200 }}
+        >
+          탁송 프리랜서 기사
+        </Button>
+      </div>
+      {/* <div style={{ display: 'flex', marginTop: '2rem' }}>
+    <Button variant="contained" sx={{ fontWeight: 'bold', fontSize: 15 }}>
+      확인
+    </Button>
+    <Typography variant="body1" gutterBottom sx={{ alignSelf: 'center', ml: 2 }}>
+      Enter ↩︎를 누르십시오
+    </Typography>
+  </div> */}
     </Container>
   );
 };

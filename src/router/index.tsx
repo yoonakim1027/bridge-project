@@ -39,7 +39,7 @@ export default function Router({ isLoggedIn }: RouterProps) {
           element={isLoggedIn ? <Navigate to="/upload" /> : <Navigate to="/login" />}
         />
         {/* <Route path="/signUp" element={<SignUpPage />} /> */}
-        <Route path="/providersignUp" element={<ProviderSignUpPage />} />
+        {/* <Route path="/providersignUp" element={<ProviderSignUpPage />} /> */}
         <Route path="/signUp" element={<SignUpMain />} />
         <Route path="/request" element={<RequestForm />} />
       </Routes>
