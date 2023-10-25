@@ -1,7 +1,5 @@
 import React from 'react';
-import { Button, Paper, Typography, Container } from '@mui/material';
-import LocalShippingIcon from '@mui/icons-material/LocalShipping';
-import PersonIcon from '@mui/icons-material/Person';
+import { Button, Typography, Container } from '@mui/material';
 
 interface InitSignUpSelectProps {
   setSelected: (value: string) => void;
@@ -9,34 +7,49 @@ interface InitSignUpSelectProps {
 
 const InitSignUpSelect: React.FC<InitSignUpSelectProps> = ({ setSelected }) => {
   return (
-    <Container maxWidth="md" sx={{ p: 3 }}>
-      <Paper sx={{ p: 5, borderRadius: 2 }}>
-        <Typography
-          variant="h6"
-          component="h3"
-          gutterBottom
-          color={'gray'}
-          sx={{ mb: 5 }}
-        >
-          어떤 서비스를 원하시나요?
-        </Typography>
+    <Container maxWidth="xl" sx={{ m: 3 }}>
+      <Typography
+        variant="h5"
+        component="h1"
+        gutterBottom
+        sx={{ fontWeight: 'bold' }}
+      >
+        수요자로서 서비스를 받으실 건가요,
+      </Typography>
+      <Typography
+        variant="h5"
+        component="h1"
+        gutterBottom
+        sx={{ fontWeight: 'bold' }}
+      >
+        아니면 공급자로서 서비스를 제공하실 건가요? *
+      </Typography>
+      <div style={{ marginTop: '2rem' }}>
         <Button
-          variant="outlined"
+          variant="contained"
+          size="large"
           onClick={() => setSelected('수요자')}
-          startIcon={<PersonIcon sx={{ width: 100, height: 100 }} />}
-          sx={{ width: 200, height: 150, fontSize: 20, mr: 5 }}
+          sx={{ mr: 3, width: 200 }}
         >
           수요자
         </Button>
         <Button
           variant="outlined"
+          size="large"
           onClick={() => setSelected('공급자')}
-          startIcon={<LocalShippingIcon sx={{ width: 100, height: 100 }} />}
-          sx={{ width: 200, height: 150, fontSize: 20 }}
+          sx={{ width: 200 }}
         >
           공급자
         </Button>
-      </Paper>
+      </div>
+      {/* <div style={{ display: 'flex', marginTop: '2rem' }}>
+        <Button variant="contained" sx={{ fontWeight: 'bold', fontSize: 15 }}>
+          확인
+        </Button>
+        <Typography variant="body1" gutterBottom sx={{ alignSelf: 'center', ml: 2 }}>
+          Enter ↩︎를 누르십시오
+        </Typography>
+      </div> */}
     </Container>
   );
 };
