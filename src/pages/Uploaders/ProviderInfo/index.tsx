@@ -32,10 +32,10 @@ const InputRow: React.FC<{
     <Collapse in={visible}>
       <div>
         <Grid container>
-          <Grid item xs={3} mt={1} sx={{ display: 'flex', alignItems: 'center' }}>
+          <Grid item xs={4} mt={1} sx={{ display: 'flex', alignItems: 'center' }}>
             <Typography>{label}</Typography>
           </Grid>
-          <Grid item xs={9} mt={1}>
+          <Grid item xs={8} mt={1}>
             {component}
           </Grid>
         </Grid>
@@ -294,7 +294,7 @@ const ProviderInfoPage: React.FC = () => {
       label: '차량 출발지 픽업 장소',
       component: (
         <Grid container alignItems="center">
-          <Grid item xs={7} mt={2}>
+          <Grid item xs={9}>
             <InputField
               label="차량 출발지 픽업 장소"
               placeholder="출발지를 입력하세요."
@@ -304,7 +304,7 @@ const ProviderInfoPage: React.FC = () => {
               }}
             />
           </Grid>
-          <Grid item xs={2} mt={3}>
+          <Grid item xs={3} mt={1}>
             <Button
               onClick={openPickupAddressModal}
               sx={{ height: '55px', width: '100%', p: 0 }}
@@ -323,7 +323,7 @@ const ProviderInfoPage: React.FC = () => {
       component: (
         <>
           <Grid container alignItems="center">
-            <Grid item xs={7}>
+            <Grid item xs={9}>
               <InputField
                 label="탁송 도착 장소"
                 placeholder="도착 장소를 입력하세요."
@@ -333,7 +333,7 @@ const ProviderInfoPage: React.FC = () => {
                 }}
               />
             </Grid>
-            <Grid item xs={2} mb={1}>
+            <Grid item xs={3} mb={1}>
               <Button
                 onClick={openArrivalAddressModal}
                 sx={{ mt: 2, height: '55px', width: '100%', p: 0 }}
