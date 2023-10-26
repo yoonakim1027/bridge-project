@@ -168,7 +168,7 @@ const MemberApprove: React.FC = () => {
   };
 
   return (
-    <Paper sx={{ p: 3 }}>
+    <Paper sx={{ p: 3, m: 2, width: '100%' }}>
       <Container sx={{ display: 'flex', mb: 2 }}>
         <Typography component="h2" variant="h6">
           회원 승인 / 거부
