@@ -1,6 +1,15 @@
 // RequestorInfo.tsx
 import React from 'react';
-import { Typography, Box } from '@mui/material';
+import {
+  Typography,
+  Box,
+  Divider,
+  TableContainer,
+  Table,
+  TableBody,
+  TableRow,
+  TableCell,
+} from '@mui/material';
 
 interface RequestorInfoProps {
   name: string;
@@ -15,8 +24,27 @@ export const RequestorInfo: React.FC<RequestorInfoProps> = ({
 }) => (
   <Box>
     <Typography variant="h5">의뢰자 정보</Typography>
-    <Typography>이름: {name}</Typography>
-    <Typography>연락처: {contact}</Typography>
-    <Typography>주소: {address}</Typography>
+    <Divider
+      sx={{ m: 1, borderBottomWidth: 2, borderBottomColor: 'currentcolor' }}
+      variant="fullWidth"
+    />
+    <TableContainer>
+      <Table>
+        <TableBody>
+          <TableRow>
+            <TableCell>이름</TableCell>
+            <TableCell>{name}</TableCell>
+          </TableRow>
+          <TableRow>
+            <TableCell>연락처</TableCell>
+            <TableCell>{contact}</TableCell>
+          </TableRow>
+          <TableRow>
+            <TableCell>주소</TableCell>
+            <TableCell>{address}</TableCell>
+          </TableRow>
+        </TableBody>
+      </Table>
+    </TableContainer>
   </Box>
 );

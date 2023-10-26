@@ -1,6 +1,15 @@
 // PickupInfo.tsx
 import React from 'react';
-import { Typography, Box } from '@mui/material';
+import {
+  Typography,
+  Box,
+  Divider,
+  TableContainer,
+  Table,
+  TableBody,
+  TableRow,
+  TableCell,
+} from '@mui/material';
 
 interface PickupInfoProps {
   address: string;
@@ -15,8 +24,24 @@ export const PickupInfo: React.FC<PickupInfoProps> = ({
 }) => (
   <Box>
     <Typography variant="h5">픽업 정보</Typography>
-    <Typography>주소: {address}</Typography>
-    <Typography>날짜 및 시간: {datetime}</Typography>
-    <Typography>연락처: {contact}</Typography>
+    <Divider sx={{ m: 1, borderBottomWidth: 2, borderBottomColor: 'currentcolor' }} variant="fullWidth" />
+    <TableContainer>
+      <Table>
+        <TableBody>
+          <TableRow>
+            <TableCell>주소</TableCell>
+            <TableCell>{address}</TableCell>
+          </TableRow>
+          <TableRow>
+            <TableCell>날짜 및 시간</TableCell>
+            <TableCell>{datetime}</TableCell>
+          </TableRow>
+          <TableRow>
+            <TableCell>연락처</TableCell>
+            <TableCell>{contact}</TableCell>
+          </TableRow>
+        </TableBody>
+      </Table>
+    </TableContainer>
   </Box>
 );
