@@ -5,6 +5,7 @@ import Cookies from 'js-cookie';
 import { useNavigate } from 'react-router-dom';
 import { Stack } from '@mui/material';
 import MemberApprove from '@/components/Admin/MemberApprove';
+import MemberList from '../../components/Admin/MemberList';
 
 const AdminPage: React.FC = () => {
   const navigate = useNavigate();
@@ -31,7 +32,10 @@ const AdminPage: React.FC = () => {
       >
         <LogoutButton text="로그아웃" onClick={handleLogout} />
       </Stack>
-      <MemberApprove />
+      <Container>
+        <MemberApprove />
+        <MemberList />
+      </Container>
     </Container>
   );
 };
