@@ -16,6 +16,8 @@ import {
 } from '@mui/material';
 import KeyboardArrowDownIcon from '@mui/icons-material/KeyboardArrowDown';
 import KeyboardArrowUpIcon from '@mui/icons-material/KeyboardArrowUp';
+import CheckCircleOutlineIcon from '@mui/icons-material/CheckCircleOutline';
+import BlockIcon from '@mui/icons-material/Block';
 
 function sampleData(
   name: string,
@@ -37,11 +39,17 @@ function sampleData(
         orderNumber: '202310260001',
         date: '2020-01-05',
         customerId: '11091700',
+        startPicture: 'imageUrl',
+        arrivalPicture: 'imageUrl',
+        isPayment: true,
       },
       {
         orderNumber: '202310260002',
         date: '2020-01-02',
         customerId: 'Anonymous',
+        startPicture: 'imageUrl',
+        arrivalPicture: 'imageUrl',
+        isPayment: false,
       },
     ],
   };
@@ -72,7 +80,7 @@ function Row(props: { row: ReturnType<typeof sampleData> }) {
             {open ? <KeyboardArrowUpIcon /> : <KeyboardArrowDownIcon />}
           </IconButton>
         </TableCell>
-        <TableCell component="th" scope="row">
+        <TableCell component="th" scope="row" align="center">
           {row.name}
         </TableCell>
         <TableCell align="center">{row.type}</TableCell>
@@ -89,12 +97,19 @@ function Row(props: { row: ReturnType<typeof sampleData> }) {
               <Typography variant="h6" gutterBottom component="div">
                 주문 목록
               </Typography>
-              <Table size="small" aria-label="purchases">
+              <Table
+                size="small"
+                aria-label="purchases"
+                sx={{ textAlignLast: 'center' }}
+              >
                 <TableHead>
                   <TableRow>
                     <TableCell>주문 번호</TableCell>
                     <TableCell>주문 일자</TableCell>
                     <TableCell>고객 아이디</TableCell>
+                    <TableCell>탁송 전 사진</TableCell>
+                    <TableCell>탁송 후 사진</TableCell>
+                    <TableCell>정산 내역</TableCell>
                   </TableRow>
                 </TableHead>
                 <TableBody>
@@ -105,6 +120,15 @@ function Row(props: { row: ReturnType<typeof sampleData> }) {
                       </TableCell>
                       <TableCell>{orderRow.date}</TableCell>
                       <TableCell>{orderRow.customerId}</TableCell>
+                      <TableCell>{orderRow.startPicture}</TableCell>
+                      <TableCell>{orderRow.arrivalPicture}</TableCell>
+                      <TableCell>
+                        {orderRow.isPayment ? (
+                          <CheckCircleOutlineIcon color="primary" />
+                        ) : (
+                          <BlockIcon color="warning" />
+                        )}
+                      </TableCell>
                     </TableRow>
                   ))}
                 </TableBody>
@@ -170,7 +194,7 @@ export default function MemberList() {
           <Table aria-label="collapsible table">
             <TableHead>
               <TableRow>
-                <TableCell />
+                <TableCell size="small" />
                 <TableCell align="center">이름</TableCell>
                 <TableCell align="center">수요자/공급자 여부</TableCell>
                 <TableCell align="center">연락처</TableCell>
