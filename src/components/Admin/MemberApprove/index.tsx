@@ -42,13 +42,15 @@ const MemberApprove: React.FC = () => {
       field: 'id',
       headerName: 'ID',
       flex: 1,
+      headerAlign: 'center',
     },
-    { field: 'name', headerName: 'Name', flex: 1 },
-    { field: 'email', headerName: 'Email', flex: 1 },
+    { field: 'name', headerName: 'Name', flex: 1, headerAlign: 'center' },
+    { field: 'email', headerName: 'Email', flex: 1, headerAlign: 'center' },
     {
       field: 'documentUrl',
       headerName: '제출 서류',
       flex: 1,
+      headerAlign: 'center',
       renderCell: (params) => (
         <div>
           <Button
@@ -64,6 +66,8 @@ const MemberApprove: React.FC = () => {
       field: 'documentUrl2',
       headerName: '통장 사본',
       flex: 1,
+      headerAlign: 'center',
+
       renderCell: (params) => (
         <div>
           <Button
@@ -79,12 +83,16 @@ const MemberApprove: React.FC = () => {
       field: 'isSubmit',
       headerName: '서류 제출 여부',
       flex: 1,
+      headerAlign: 'center',
+
       renderCell: (params) => <>{params.value ? <CheckIcon /> : <CloseIcon />}</>,
     },
     {
       field: 'action',
       headerName: '승인 여부',
       flex: 1,
+      headerAlign: 'center',
+
       renderCell: (params) => (
         <div>
           <Button size="small" onClick={() => handleApprove(params.row.id)}>
