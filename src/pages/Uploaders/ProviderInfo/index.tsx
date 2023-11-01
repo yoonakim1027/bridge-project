@@ -22,6 +22,7 @@ import {
 } from '@mui/material';
 import brands from '@/data/brand.json';
 import { styled } from '@mui/system';
+import KakaoPost from '@/components/Delivery/KakaoPost';
 
 const InputRow: React.FC<{
   label: string;
@@ -90,6 +91,14 @@ const ProviderInfoPage: React.FC = () => {
   const [carNumberPart1, setCarNumberPart1] = useState(''); // 2 or 3자리 숫자
   const [carNumberPart2, setCarNumberPart2] = useState(''); // 한글 한 글자
   const [carNumberPart3, setCarNumberPart3] = useState(''); // 4자리 숫자
+
+  // 카카오 주소 api 연동 관련 코드입니다
+  const [address, setAddress] = useState({ areaAddress: '', townAddress: '' });
+  const setAddressObj = (newAddress) => {
+    setPickupPlaceSelectedAddress(newAddress.townAddress); // townAddress는 주소의 전체 주소입니다. 필요에 따라 수정하세요.
+    setShowPickupLocationInput(true);
+    setShowArrivalLocationInput(true);
+  };
 
   // 차량 번호 유효성 검사
   function isValidCarNumber(value) {
@@ -305,14 +314,17 @@ const ProviderInfoPage: React.FC = () => {
             />
           </Grid>
           <Grid item xs={3} mt={1}>
-            <Button
-              onClick={openPickupAddressModal}
-              sx={{ height: '55px', width: '100%', p: 0 }}
-              size="large"
-              variant="outlined"
-            >
-              주소 검색
-            </Button>
+            <KakaoPost setAddressObj={setAddressObj} />
+          </Grid>
+          <Grid container alignContent="center">
+            <InputField
+              label="차량 출발지 상세 주소"
+              placeholder="상세 주소를 입력하세요."
+              // value={pickupPlaceSelectedAddress}
+              onChange={() => {
+                setShowArrivalLocationInput(true);
+              }}
+            />
           </Grid>
         </Grid>
       ),
@@ -334,14 +346,17 @@ const ProviderInfoPage: React.FC = () => {
               />
             </Grid>
             <Grid item xs={3} mb={1}>
-              <Button
-                onClick={openArrivalAddressModal}
-                sx={{ mt: 2, height: '55px', width: '100%', p: 0 }}
-                size="large"
-                variant="outlined"
-              >
-                주소 검색
-              </Button>
+              <KakaoPost setAddressObj={setAddressObj} />
+            </Grid>
+            <Grid container alignItems="center">
+              <InputField
+                label="탁송 도착 상세 주소"
+                placeholder="도착 상세 주소를 입력하세요."
+                // value={arrivalSelectedAddress}
+                onChange={() => {
+                  setShowTimeInput(true);
+                }}
+              />
             </Grid>
           </Grid>
         </>
