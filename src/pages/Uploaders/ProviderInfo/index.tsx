@@ -23,6 +23,7 @@ import {
 import brands from '@/data/brand.json';
 import { styled } from '@mui/system';
 import KakaoPost from '@/components/Delivery/KakaoPost';
+import axios from 'axios';
 
 const InputRow: React.FC<{
   label: string;
@@ -66,6 +67,36 @@ const ProviderInfoPage: React.FC = () => {
   const handleCancel = () => {
     console.log('Cancelled');
   };
+
+  const handleSubmit = () => {
+    console.log('Submitted Data:');
+    inputFields.forEach((field) => {
+      console.log(`${field.label}:`, field.component.props.value);
+    });
+
+    // // 서버측으로 보내기
+    // const dataToSend = {
+    //   brand: brand,
+    //   carNumber: carNumber,
+    //   insuranceRegistered: insuranceRegistered,
+    //   startAddress: startAddress,
+    //   endAddress: endAddress,
+    // };
+
+    // const serverUrl = 'https://localhost:3000';
+
+    // axios
+    //   .post(serverUrl, dataToSend)
+    //   .then((response) => {
+    //     console.log('서버 응답:', response.data);
+    //     // 서버로부터의 응답 처리
+    //   })
+    //   .catch((error) => {
+    //     console.error('오류 발생:', error);
+    //     // 오류 처리
+    //   });
+  };
+
   const [brand, setBrand] = useState<string | null>(null);
   const today = new Date();
   const formattedDate = today.toISOString().split('T')[0];
@@ -93,10 +124,18 @@ const ProviderInfoPage: React.FC = () => {
   const [carNumberPart3, setCarNumberPart3] = useState(''); // 4자리 숫자
 
   // 카카오 주소 api 연동 관련 코드입니다
-  const [address, setAddress] = useState({ areaAddress: '', townAddress: '' });
-  const setAddressObj = (newAddress) => {
+  const [startAddress, setStartAddress] = useState({
+    areaAddress: '',
+    townAddress: '',
+  });
+  const setStartAddressObj = (newAddress) => {
     setPickupPlaceSelectedAddress(newAddress.townAddress); // townAddress는 주소의 전체 주소입니다. 필요에 따라 수정하세요.
     setShowPickupLocationInput(true);
+  };
+
+  const [endAddress, setEndAddress] = useState({ areaAddress: '', townAddress: '' });
+  const setEndAddressObj = (newAddress) => {
+    setArrivalSelectedAddress(newAddress.townAddress); // townAddress는 주소의 전체 주소입니다. 필요에 따라 수정하세요.
     setShowArrivalLocationInput(true);
   };
 
@@ -314,7 +353,7 @@ const ProviderInfoPage: React.FC = () => {
             />
           </Grid>
           <Grid item xs={3} mt={1}>
-            <KakaoPost setAddressObj={setAddressObj} />
+            <KakaoPost setAddressObj={setStartAddressObj} />
           </Grid>
           <Grid container alignContent="center">
             <InputField
@@ -346,7 +385,7 @@ const ProviderInfoPage: React.FC = () => {
               />
             </Grid>
             <Grid item xs={3} mb={1}>
-              <KakaoPost setAddressObj={setAddressObj} />
+              <KakaoPost setAddressObj={setEndAddressObj} />
             </Grid>
             <Grid container alignItems="center">
               <InputField
@@ -426,7 +465,7 @@ const ProviderInfoPage: React.FC = () => {
 
                 {inputFields.map((field, index) =>
                   field.visible ? (
-                    <>
+                    <React.Fragment key={index}>
                       <Grid
                         item
                         xs={3}
@@ -440,7 +479,7 @@ const ProviderInfoPage: React.FC = () => {
                       <Grid item xs={9} mt={1}>
                         <Collapse in={field.visible}>{field.component}</Collapse>
                       </Grid>
-                    </>
+                    </React.Fragment>
                   ) : null,
                 )}
               </Grid>
@@ -456,7 +495,7 @@ const ProviderInfoPage: React.FC = () => {
           {showSubmitButton && (
             <Grid item xs={12} mt={2} display={'flex'} justifyContent={'center'}>
               <Box mt={2} mr={2}>
-                <SubmitButton text="제출" />
+                <SubmitButton text="제출" onClick={handleSubmit} />
               </Box>
               <Box mt={2} mr={8}>
                 <CancelButton text="취소" onClick={handleCancel} />
